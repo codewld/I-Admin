@@ -14,7 +14,7 @@
     <modules>
         <module>I-Admin-API</module>
         <module>I-Admin-Common</module>
-        <module>I-Admin-Generator</module>
+        <module>I-Admin-CRUD</module>
     </modules>
 
     <groupId>pers.codewld</groupId>

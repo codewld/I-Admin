@@ -10,10 +10,10 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>I-Admin-Generator</artifactId>
+    <artifactId>I-Admin-CRUD</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>I-Admin-Generator</name>
-    <description>I-Admin-Generator</description>
+    <name>I-Admin-CRUD</name>
+    <description>I-Admin-CRUD</description>
 
     <properties>
         <java.version>1.8</java.version>
