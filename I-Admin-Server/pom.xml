@@ -11,11 +11,18 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <modules>
+        <module>I-Admin-API</module>
+        <module>I-Admin-Common</module>
+        <module>I-Admin-Generator</module>
+    </modules>
+
     <groupId>pers.codewld</groupId>
     <artifactId>I-Admin-Server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>I-Admin-Server</name>
     <description>I-Admin-Server</description>
+    <packaging>pom</packaging>
 
     <properties>
         <java.version>1.8</java.version>
@@ -70,19 +77,6 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.5.2</version>
-        </dependency>
-
-        <!-- Mybatis-Plus-Generator -->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-            <version>3.5.3</version>
-        </dependency>
-
-        <!-- 模板引擎  [用于Mybatis-Plus-Generator] -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
     </dependencies>
 
