@@ -1,9 +1,0 @@
-url: jdbc:mysql://localhost:3306/i-admin?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-username: root
-password: root
-#作者
-author: codewld
-#父包名
-parent: pers.codewld.iadmin
-#是否将生成结果单独放置
-isolated: true
