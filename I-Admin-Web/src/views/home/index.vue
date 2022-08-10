@@ -1,3 +1,4 @@
+<!--首页-->
 <template>
-  <router-view/>
+  首页
 </template>
