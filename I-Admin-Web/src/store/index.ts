@@ -1,6 +1,7 @@
 import { createPinia } from 'pinia'
 import { createPersistedState } from 'pinia-plugin-persistedstate'
 import { useAccountStore } from './modules/accountState'
+import { useLayoutStore } from './modules/layoutState'
 
 const store = createPinia()
 
@@ -12,5 +13,6 @@ store.use(createPersistedState({
 export default store
 
 export {
-  useAccountStore
+  useAccountStore,
+  useLayoutStore
 }
