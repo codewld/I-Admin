@@ -22,5 +22,6 @@ export const useAccountStore = defineStore({
     getUsername(): string {
       return this.username
     }
-  }
+  },
+  persist: true
 })
