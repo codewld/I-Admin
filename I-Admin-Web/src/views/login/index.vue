@@ -4,8 +4,11 @@ import { Ref, ref } from 'vue'
 import 'element-plus/es/components/message/style/css'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
+import { useAccountStore } from '@/store'
 
 const router = useRouter()
+
+const accountStore = useAccountStore()
 
 /**
  * 登录表单数据
@@ -19,6 +22,7 @@ const loginFormData: Ref<Account.loginParam> = ref({
  * 登录
  */
 const login = () => {
+  accountStore.setUsername(loginFormData.value.username)
   router.push({ name: 'home' })
   ElMessage.success('登录成功')
 }

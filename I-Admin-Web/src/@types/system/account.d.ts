@@ -8,4 +8,12 @@ declare namespace Account {
     password: string
   }
 
+  /**
+   * 账户信息
+   */
+  interface account {
+    /** 用户名 */
+    username: string
+  }
+
 }
