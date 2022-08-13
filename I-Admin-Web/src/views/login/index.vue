@@ -6,17 +6,18 @@ import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { useAccountStore } from '@/store'
 
+// -- 路由相关 --
 const router = useRouter()
 
-const accountStore = useAccountStore()
 
-/**
- * 登录表单数据
- */
+// -- 登录相关 --
+/** 登录表单数据 */
 const loginFormData: Ref<Account.loginParam> = ref({
   username: '',
   password: ''
 })
+
+const accountStore = useAccountStore()
 
 /**
  * 登录

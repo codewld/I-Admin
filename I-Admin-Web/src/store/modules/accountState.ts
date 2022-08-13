@@ -15,13 +15,5 @@ export const useAccountStore = defineStore({
       this.username = username
     }
   },
-  getters: {
-    /**
-     * 获取用户名
-     */
-    getUsername(): string {
-      return this.username
-    }
-  },
   persist: true
 })
