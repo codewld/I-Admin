@@ -4,7 +4,9 @@ declare namespace Account {
    * 登录参数
    */
   interface loginParam {
+    /** 用户名 */
     username: string,
+    /** 密码 */
     password: string
   }
 
