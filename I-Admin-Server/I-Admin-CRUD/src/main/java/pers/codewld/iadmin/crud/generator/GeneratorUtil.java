@@ -1,10 +1,12 @@
 package pers.codewld.iadmin.crud.generator;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.ConstVal;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.po.LikeTable;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.baomidou.mybatisplus.generator.fill.Column;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Collections;
@@ -49,6 +51,8 @@ public class GeneratorUtil {
                                 .enableRestStyle()
                                 .entityBuilder()
                                 .enableLombok()
+                                .addTableFills(new Column("create_time", FieldFill.INSERT))
+                                .addTableFills(new Column("update_time", FieldFill.INSERT_UPDATE))
                                 .enableRemoveIsPrefix()
                                 .mapperBuilder()
                                 .mapperAnnotation(Mapper.class)
