@@ -1,10 +1,12 @@
 package pers.codewld.iadmin.crud.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
+import pers.codewld.iadmin.crud.model.param.QueryParam;
 
 import javax.annotation.Resource;
 
@@ -41,11 +43,91 @@ public class BaseController<T> {
     }
 
     @ApiOperation("分页查询")
-    @GetMapping("/page")
+    @PostMapping("/page")
     public Page<T> page(
-            @ApiParam("当前页数") Integer pageNum,
-            @ApiParam("每页条数") Integer pageSize) {
-        return baseService.page(new Page<>(pageNum, pageSize));
+            @RequestParam @ApiParam("当前页数") Integer pageNum,
+            @RequestParam @ApiParam("每页条数") Integer pageSize,
+            @RequestBody QueryParam queryParam) {
+        QueryWrapper<T> queryWrapper = getQueryWrapper(queryParam);
+        return baseService.page(new Page<>(pageNum, pageSize), queryWrapper);
+    }
+
+    /**
+     * 根据查询参数生成QueryWrapper
+     * @param queryParam 查询参数
+     * @return QueryWrapper
+     */
+    private QueryWrapper<T> getQueryWrapper(QueryParam queryParam) {
+        QueryWrapper<T> queryWrapper = new QueryWrapper<>();
+        // 查询条件
+        queryParam.getConditions().forEach(item -> {
+            QueryParam.Condition.Operator operator = item.getOperator();
+            switch (operator) {
+                case EQ:
+                    queryWrapper.eq(item.getField(), item.getValue().get(0));
+                    break;
+                case NE:
+                    queryWrapper.ne(item.getField(), item.getValue().get(0));
+                    break;
+                case GT:
+                    queryWrapper.gt(item.getField(), item.getValue().get(0));
+                    break;
+                case GE:
+                    queryWrapper.ge(item.getField(), item.getValue().get(0));
+                    break;
+                case LT:
+                    queryWrapper.lt(item.getField(), item.getValue().get(0));
+                    break;
+                case LE:
+                    queryWrapper.le(item.getField(), item.getValue().get(0));
+                    break;
+                case BETWEEN:
+                    queryWrapper.between(item.getField(), item.getValue().get(0), item.getValue().get(1));
+                    break;
+                case NOT_BETWEEN:
+                    queryWrapper.notBetween(item.getField(), item.getValue().get(0), item.getValue().get(1));
+                    break;
+                case LIKE:
+                    queryWrapper.like(item.getField(), item.getValue().get(0));
+                    break;
+                case NOT_LIKE:
+                    queryWrapper.notLike(item.getField(), item.getValue().get(0));
+                    break;
+                case LIKE_LEFT:
+                    queryWrapper.likeLeft(item.getField(), item.getValue().get(0));
+                    break;
+                case LIKE_RIGHT:
+                    queryWrapper.likeRight(item.getField(), item.getValue().get(0));
+                    break;
+                case IS_NULL:
+                    queryWrapper.isNull(item.getField());
+                    break;
+                case IS_NOT_NULL:
+                    queryWrapper.isNotNull(item.getField());
+                    break;
+                case IN:
+                    queryWrapper.in(item.getField(), item.getValue().get(0));
+                    break;
+                case NOT_IN:
+                    queryWrapper.notIn(item.getField(), item.getValue().get(0));
+                    break;
+                default:
+            }
+        });
+        // 排序
+        queryParam.getOrders().forEach(item -> {
+            QueryParam.Order.OrderType orderType = item.getOrderType();
+            switch (orderType) {
+                case ASC:
+                    queryWrapper.orderByAsc(item.getField());
+                    break;
+                case DESC:
+                    queryWrapper.orderByDesc(item.getField());
+                    break;
+                default:
+            }
+        });
+        return queryWrapper;
     }
 
 }
