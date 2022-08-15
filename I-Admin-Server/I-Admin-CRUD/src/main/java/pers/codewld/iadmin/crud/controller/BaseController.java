@@ -18,7 +18,7 @@ public class BaseController<T> {
 
     @ApiOperation("添加")
     @PostMapping("")
-    public boolean add(T t) {
+    public boolean add(@RequestBody T t) {
         return baseService.save(t);
     }
 
@@ -30,7 +30,7 @@ public class BaseController<T> {
 
     @ApiOperation("修改")
     @PutMapping("")
-    public boolean update(T t) {
+    public boolean update(@RequestBody T t) {
         return baseService.updateById(t);
     }
 
