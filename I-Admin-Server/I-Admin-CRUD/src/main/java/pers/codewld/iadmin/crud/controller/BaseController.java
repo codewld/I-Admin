@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pers.codewld.iadmin.common.util.ICollectionUtils;
 import pers.codewld.iadmin.crud.model.param.QueryParam;
 
 import javax.annotation.Resource;
@@ -70,8 +71,9 @@ public class BaseController<T> {
      */
     private QueryWrapper<T> getQueryWrapper(QueryParam queryParam) {
         QueryWrapper<T> queryWrapper = new QueryWrapper<>();
+
         // 查询条件
-        queryParam.getConditions().forEach(item -> {
+        ICollectionUtils.deNull(queryParam.getConditions()).forEach(item -> {
             QueryParam.Condition.Operator operator = item.getOperator();
             switch (operator) {
                 case EQ:
@@ -125,8 +127,9 @@ public class BaseController<T> {
                 default:
             }
         });
+
         // 排序
-        queryParam.getOrders().forEach(item -> {
+        ICollectionUtils.deNull(queryParam.getOrders()).forEach(item -> {
             QueryParam.Order.Type type = item.getType();
             switch (type) {
                 case ASC:
@@ -138,6 +141,7 @@ public class BaseController<T> {
                 default:
             }
         });
+
         return queryWrapper;
     }
 

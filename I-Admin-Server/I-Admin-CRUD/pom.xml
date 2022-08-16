@@ -16,6 +16,11 @@
     <description>I-Admin-CRUD</description>
 
     <dependencies>
+        <dependency>
+            <groupId>pers.codewld</groupId>
+            <artifactId>I-Admin-Common</artifactId>
+        </dependency>
+
         <!-- Spring Boot Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
