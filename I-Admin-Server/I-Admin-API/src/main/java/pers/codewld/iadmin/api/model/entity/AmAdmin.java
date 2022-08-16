@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -28,12 +29,14 @@ public class AmAdmin implements Serializable {
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
+    @Size(min = 5, max = 20, message = "用户名长度应在5-20之间")
     @ApiModelProperty("用户名")
     private String username;
 
     @ApiModelProperty("密码")
     private String password;
 
+    @Size(min = 5, max = 20, message = "昵称长度应在5-20之间")
     @ApiModelProperty("昵称")
     private String nickName;
 

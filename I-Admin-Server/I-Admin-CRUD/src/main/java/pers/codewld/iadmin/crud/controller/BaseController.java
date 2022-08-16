@@ -5,15 +5,18 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.codewld.iadmin.crud.model.param.QueryParam;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 /**
  * 基本增删改查接口
  */
+@Validated
 public class BaseController<T> {
 
     @Resource
@@ -21,7 +24,7 @@ public class BaseController<T> {
 
     @ApiOperation("添加")
     @PostMapping("")
-    public boolean add(@RequestBody T t) {
+    public boolean add(@RequestBody @Validated T t) {
         return baseService.save(t);
     }
 
@@ -33,7 +36,7 @@ public class BaseController<T> {
 
     @ApiOperation("修改")
     @PutMapping("")
-    public boolean update(@RequestBody T t) {
+    public boolean update(@RequestBody @Validated T t) {
         return baseService.updateById(t);
     }
 
@@ -46,16 +49,16 @@ public class BaseController<T> {
     @ApiOperation("分页查询")
     @PostMapping("/page")
     public Page<T> page(
-            @RequestParam @ApiParam("当前页数") Integer pageNum,
-            @RequestParam @ApiParam("每页条数") Integer pageSize,
-            @RequestBody QueryParam queryParam) {
+            @RequestParam @Min(value = 1, message = "当前页数最小为1") @ApiParam("当前页数") Integer pageNum,
+            @RequestParam @Min(value = 1, message = "每页条数最小为1") @ApiParam("每页条数") Integer pageSize,
+            @RequestBody @Validated QueryParam queryParam) {
         QueryWrapper<T> queryWrapper = getQueryWrapper(queryParam);
         return baseService.page(new Page<>(pageNum, pageSize), queryWrapper);
     }
 
     @ApiOperation("批量查询")
     @PostMapping("/list")
-    public List<T> list(@RequestBody QueryParam queryParam) {
+    public List<T> list(@RequestBody @Validated QueryParam queryParam) {
         QueryWrapper<T> queryWrapper = getQueryWrapper(queryParam);
         return baseService.list(queryWrapper);
     }
