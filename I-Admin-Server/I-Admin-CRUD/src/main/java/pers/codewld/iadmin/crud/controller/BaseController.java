@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import pers.codewld.iadmin.crud.model.param.QueryParam;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 基本增删改查接口
@@ -50,6 +51,13 @@ public class BaseController<T> {
             @RequestBody QueryParam queryParam) {
         QueryWrapper<T> queryWrapper = getQueryWrapper(queryParam);
         return baseService.page(new Page<>(pageNum, pageSize), queryWrapper);
+    }
+
+    @ApiOperation("批量查询")
+    @PostMapping("/list")
+    public List<T> list(@RequestBody QueryParam queryParam) {
+        QueryWrapper<T> queryWrapper = getQueryWrapper(queryParam);
+        return baseService.list(queryWrapper);
     }
 
     /**
