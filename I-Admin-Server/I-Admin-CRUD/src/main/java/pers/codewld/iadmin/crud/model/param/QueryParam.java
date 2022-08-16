@@ -84,12 +84,12 @@ public class QueryParam {
         /**
          * 排序方式
          */
-        private OrderType orderType;
+        private Type type;
 
         /**
          * 排序方式
          */
-        public enum OrderType {
+        public enum Type {
 
             ASC, DESC
 

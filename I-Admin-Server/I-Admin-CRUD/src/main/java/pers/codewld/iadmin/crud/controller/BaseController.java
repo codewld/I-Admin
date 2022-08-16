@@ -124,8 +124,8 @@ public class BaseController<T> {
         });
         // 排序
         queryParam.getOrders().forEach(item -> {
-            QueryParam.Order.OrderType orderType = item.getOrderType();
-            switch (orderType) {
+            QueryParam.Order.Type type = item.getType();
+            switch (type) {
                 case ASC:
                     queryWrapper.orderByAsc(item.getField());
                     break;
