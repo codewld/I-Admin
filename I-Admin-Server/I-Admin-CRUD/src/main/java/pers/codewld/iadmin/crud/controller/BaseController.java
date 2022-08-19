@@ -50,8 +50,8 @@ public class BaseController<T> {
     @ApiOperation("分页查询")
     @PostMapping("/page")
     public Page<T> page(
-            @RequestParam @Min(value = 1, message = "当前页数最小为1") @ApiParam("当前页数") Integer pageNum,
-            @RequestParam @Min(value = 1, message = "每页条数最小为1") @ApiParam("每页条数") Integer pageSize,
+            @RequestParam(value = "pageNum", defaultValue = "1")  @Min(value = 1, message = "当前页数最小为1") @ApiParam("当前页数") Integer pageNum,
+            @RequestParam(value = "pageSize", defaultValue = "1")  @Min(value = 1, message = "每页条数最小为1") @ApiParam("每页条数") Integer pageSize,
             @RequestBody @Validated QueryParam queryParam) {
         QueryWrapper<T> queryWrapper = getQueryWrapper(queryParam);
         return baseService.page(new Page<>(pageNum, pageSize), queryWrapper);

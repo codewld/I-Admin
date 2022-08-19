@@ -1,60 +1,57 @@
 package pers.codewld.iadmin.common.model.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import pers.codewld.iadmin.common.model.enums.ResultCode;
 
 /**
  * 响应体
  */
 @Getter
+@ApiModel("响应体")
 public class ResultVO {
 
-    /**
-     * 状态码
-     */
+    @ApiModelProperty("状态码")
     private final int code;
 
-    /**
-     * 描述
-     */
+    @ApiModelProperty("描述")
     private final String msg;
 
-    /**
-     * 数据
-     */
+    @ApiModelProperty("数据")
     private final Object data;
 
     public static ResultVO success() {
-        return new ResultVO(ResultCode.SUCCESS, null);
+        return new ResultVO(Code.SUCCESS, null);
     }
 
     public static ResultVO success(Object data) {
-        return new ResultVO(ResultCode.SUCCESS, data);
+        return new ResultVO(Code.SUCCESS, data);
     }
 
     public static ResultVO fail() {
-        return new ResultVO(ResultCode.FAILED, null);
+        return new ResultVO(Code.FAILED, null);
     }
 
     public static ResultVO fail(String msg) {
-        return new ResultVO(ResultCode.FAILED.getCode(), msg, null);
+        return new ResultVO(Code.FAILED.getCode(), msg, null);
     }
 
-    public static ResultVO result(ResultCode resultCode) {
-        return new ResultVO(resultCode, null);
+    public static ResultVO result(Code code) {
+        return new ResultVO(code, null);
     }
 
-    public static ResultVO result(ResultCode resultCode, String msg) {
-        return new ResultVO(resultCode.getCode(), msg, null);
+    public static ResultVO result(Code code, String msg) {
+        return new ResultVO(code.getCode(), msg, null);
     }
 
-    public static ResultVO result(ResultCode resultCode, String msg, Object data) {
-        return new ResultVO(resultCode.getCode(), msg, data);
+    public static ResultVO result(Code code, String msg, Object data) {
+        return new ResultVO(code.getCode(), msg, data);
     }
 
-    private ResultVO(ResultCode resultCode, Object data) {
-        this.code = resultCode.getCode();
-        this.msg = resultCode.getMsg();
+    private ResultVO(Code code, Object data) {
+        this.code = code.getCode();
+        this.msg = code.getMsg();
         this.data = data;
     }
 
@@ -63,4 +60,31 @@ public class ResultVO {
         this.msg = msg;
         this.data = data;
     }
+
+    /**
+     * 响应体-状态码及描述
+     */
+    @Getter
+    @AllArgsConstructor
+    @ApiModel("响应体-状态码及描述")
+    public enum Code {
+
+        SUCCESS(0, "操作成功"),
+
+        FAILED(1000, "操作失败"),
+
+        VALIDATE_FAILED(2000, "参数错误"),
+
+        UNAUTHORIZED(8000, "未登录"),
+
+        FORBIDDEN(9000, "未授权");
+
+        @ApiModelProperty("状态码")
+        private final int code;
+
+        @ApiModelProperty("描述")
+        private final String msg;
+
+    }
+
 }

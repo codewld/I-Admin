@@ -1,31 +1,31 @@
 package pers.codewld.iadmin.common.exception;
 
-import pers.codewld.iadmin.common.model.enums.ResultCode;
+import pers.codewld.iadmin.common.model.vo.ResultVO;
 
 /**
  * 自定义异常
  */
 public class CustomException extends RuntimeException {
 
-    private final ResultCode resultCode;
+    private final ResultVO.Code code;
 
-    public CustomException(ResultCode resultCode) {
-        super(resultCode.getMsg());
-        this.resultCode = resultCode;
+    public CustomException(ResultVO.Code code) {
+        super(code.getMsg());
+        this.code = code;
     }
 
     public CustomException(String msg) {
         super(msg);
-        this.resultCode = ResultCode.FAILED;
+        this.code = ResultVO.Code.FAILED;
     }
 
-    public CustomException(ResultCode resultCode, String msg) {
+    public CustomException(ResultVO.Code code, String msg) {
         super(msg);
-        this.resultCode = resultCode;
+        this.code = code;
     }
 
-    public ResultCode getResultCode() {
-        return resultCode;
+    public ResultVO.Code getResultCode() {
+        return code;
     }
 
 }

@@ -1,6 +1,7 @@
 package pers.codewld.iadmin.crud.model.param;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,42 +18,43 @@ import java.util.List;
 @ApiModel("查询参数")
 public class QueryParam {
 
-    /**
-     * 查询条件列表
-     */
+    @ApiModelProperty("条件列表")
     List<Condition> conditions = Collections.emptyList();
 
-    /**
-     * 排序列表
-     */
+    @ApiModelProperty("排序列表")
     List<Order> orders = Collections.emptyList();
 
     /**
-     * 查询条件
+     * 查询参数-条件
      */
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
+    @ApiModel("查询参数-条件")
     public static class Condition {
 
         /**
          * 字段名
          */
+        @ApiModelProperty("字段名")
         private String field;
-
-        /**
-         * 操作符
-         */
-        private Operator operator;
 
         /**
          * 值
          */
+        @ApiModelProperty("值")
         private List<String> value = Collections.emptyList();
 
         /**
          * 操作符
          */
+        @ApiModelProperty("操作符")
+        private Operator operator;
+
+        /**
+         * 操作符
+         */
+        @ApiModel("操作符")
         public enum Operator {
 
             EQ, NE,
@@ -67,28 +69,25 @@ public class QueryParam {
 
     }
 
-
     /**
-     * 排序
+     * 查询参数-排序
      */
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
+    @ApiModel("查询参数-排序")
     public static class Order {
 
-        /**
-         * 字段名
-         */
+        @ApiModelProperty("字段名")
         private String field;
 
-        /**
-         * 排序方式
-         */
+        @ApiModelProperty("排序方式")
         private Type type;
 
         /**
          * 排序方式
          */
+        @ApiModel("排序方式")
         public enum Type {
 
             ASC, DESC
@@ -96,4 +95,5 @@ public class QueryParam {
         }
 
     }
+
 }

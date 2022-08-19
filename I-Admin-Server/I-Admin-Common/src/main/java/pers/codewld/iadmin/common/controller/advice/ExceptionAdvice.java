@@ -5,7 +5,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pers.codewld.iadmin.common.exception.CustomException;
-import pers.codewld.iadmin.common.model.enums.ResultCode;
 import pers.codewld.iadmin.common.model.vo.ResultVO;
 
 import javax.validation.ConstraintViolation;
@@ -33,7 +32,7 @@ public class ExceptionAdvice {
             ConstraintViolationException ex = (ConstraintViolationException) e;
             msg = ((ConstraintViolation<?>) (ex.getConstraintViolations().toArray()[0])).getMessage();
         }
-        return ResultVO.result(ResultCode.VALIDATE_FAILED, msg);
+        return ResultVO.result(ResultVO.Code.VALIDATE_FAILED, msg);
     }
 
     /**
