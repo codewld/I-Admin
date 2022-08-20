@@ -9,7 +9,7 @@ import pers.codewld.iadmin.common.controller.BaseController;
  * 权限-后台用户 接口
  */
 @RestController
-@RequestMapping("/am/admin")
+@RequestMapping("/am-admin")
 public class AmAdminController extends BaseController<AmAdmin> {
 
 }

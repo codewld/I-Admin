@@ -48,6 +48,7 @@ public class GeneratorUtil {
                         builder
                                 .notLikeTable(new LikeTable("relation"))
                                 .controllerBuilder()
+                                .enableHyphenStyle()
                                 .enableRestStyle()
                                 .entityBuilder()
                                 .enableLombok()
