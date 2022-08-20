@@ -50,7 +50,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(Exception.class)
     public ResultVO exception(Exception e) {
         e.printStackTrace();
-        return ResultVO.fail();
+        return ResultVO.result(ResultVO.Code.FAILED, e.getMessage());
     }
 
 }
