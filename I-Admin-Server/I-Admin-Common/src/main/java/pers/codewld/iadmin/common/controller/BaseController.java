@@ -1,4 +1,4 @@
-package pers.codewld.iadmin.crud.controller;
+package pers.codewld.iadmin.common.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -9,7 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.codewld.iadmin.common.model.vo.PageVO;
 import pers.codewld.iadmin.common.util.ICollectionUtils;
-import pers.codewld.iadmin.crud.model.param.QueryParam;
+import pers.codewld.iadmin.common.model.param.QueryParam;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
@@ -52,7 +52,7 @@ public class BaseController<T> {
     @PostMapping("/page")
     public PageVO<T> page(
             @RequestParam(value = "pageNum", defaultValue = "1")  @Min(value = 1, message = "当前页数最小为1") @ApiParam("当前页数") Integer pageNum,
-            @RequestParam(value = "pageSize", defaultValue = "1")  @Min(value = 1, message = "每页条数最小为1") @ApiParam("每页条数") Integer pageSize,
+            @RequestParam(value = "pageSize", defaultValue = "5")  @Min(value = 1, message = "每页条数最小为1") @ApiParam("每页条数") Integer pageSize,
             @RequestBody @Validated QueryParam queryParam) {
         QueryWrapper<T> queryWrapper = getQueryWrapper(queryParam);
         return new PageVO<>(baseService.page(new Page<>(pageNum, pageSize), queryWrapper));

@@ -10,39 +10,22 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>I-Admin-CRUD</artifactId>
+    <artifactId>I-Admin-Generator</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>I-Admin-CRUD</name>
-    <description>I-Admin-CRUD</description>
+    <name>I-Admin-Generator</name>
+    <description>I-Admin-Generator</description>
 
     <dependencies>
-        <dependency>
-            <groupId>pers.codewld</groupId>
-            <artifactId>I-Admin-Common</artifactId>
-        </dependency>
-
-        <!-- Spring Boot Web -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <!-- Spring Boot Validator -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-
         <!-- Spring Boot FreeMarker  [模板引擎 用于Mybatis-Plus-Generator] -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
 
-        <!-- Swagger -->
+        <!-- MySQL -->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
         <!-- Mybatis-Plus -->

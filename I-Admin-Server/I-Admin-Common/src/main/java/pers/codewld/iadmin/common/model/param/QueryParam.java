@@ -1,4 +1,4 @@
-package pers.codewld.iadmin.crud.model.param;
+package pers.codewld.iadmin.common.model.param;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

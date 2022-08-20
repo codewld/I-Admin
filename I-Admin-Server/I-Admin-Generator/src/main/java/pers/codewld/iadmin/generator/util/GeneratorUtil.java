@@ -1,4 +1,4 @@
-package pers.codewld.iadmin.crud.generator;
+package pers.codewld.iadmin.generator.util;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
@@ -29,7 +29,7 @@ public class GeneratorUtil {
         String parent = scanner.nextLine();
         scanner.close();
 
-        String baseOutputDir = System.getProperty("user.dir") + "/I-Admin-CRUD/output";
+        String baseOutputDir = System.getProperty("user.dir") + "/I-Admin-Generator/output";
         String JavaOutputDir = baseOutputDir + "/java";
         String XMLOutputDir = baseOutputDir + "/resources/mapper";
 
