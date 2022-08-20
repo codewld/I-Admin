@@ -15,11 +15,11 @@ import java.time.LocalDateTime;
 /**
  * 权限-后台用户 实体类
  */
+@ApiModel("权限-后台用户")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("am_admin")
-@ApiModel("权限-后台用户")
 public class AmAdmin implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,15 +29,15 @@ public class AmAdmin implements Serializable {
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
-    @Size(min = 5, max = 20, message = "用户名长度应在5-20之间")
     @ApiModelProperty("用户名")
+    @Size(min = 5, max = 20, message = "用户名长度应在5-20之间")
     private String username;
 
     @ApiModelProperty("密码")
     private String password;
 
-    @Size(min = 5, max = 20, message = "昵称长度应在5-20之间")
     @ApiModelProperty("昵称")
+    @Size(min = 5, max = 20, message = "昵称长度应在5-20之间")
     private String nickName;
 
     @ApiModelProperty("邮箱")

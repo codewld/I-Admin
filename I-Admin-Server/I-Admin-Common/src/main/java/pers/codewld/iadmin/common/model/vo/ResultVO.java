@@ -8,8 +8,8 @@ import lombok.Getter;
 /**
  * 响应体
  */
-@Getter
 @ApiModel("响应体")
+@Getter
 public class ResultVO {
 
     @ApiModelProperty("状态码")

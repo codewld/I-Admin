@@ -22,6 +22,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * ${table.comment!} 实体类
  */
+<#if springdoc>
+@Schema(name = "${entity}", description = "$!{table.comment}")
+<#elseif swagger>
+@ApiModel("${table.comment!}")
+</#if>
 <#if entityLombokModel>
 @Data
 @AllArgsConstructor
@@ -32,11 +37,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 </#if>
 <#if table.convert>
 @TableName("${schemaName}${table.name}")
-</#if>
-<#if springdoc>
-@Schema(name = "${entity}", description = "$!{table.comment}")
-<#elseif swagger>
-@ApiModel("${table.comment!}")
 </#if>
 <#if superEntityClass??>
 public class ${entity} extends ${superEntityClass}<#if activeRecord><${entity}></#if> {

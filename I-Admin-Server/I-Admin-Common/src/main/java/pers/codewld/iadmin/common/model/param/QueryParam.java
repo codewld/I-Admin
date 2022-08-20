@@ -12,10 +12,10 @@ import java.util.List;
 /**
  * 查询参数
  */
+@ApiModel("查询参数")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("查询参数")
 public class QueryParam {
 
     @ApiModelProperty("条件列表")

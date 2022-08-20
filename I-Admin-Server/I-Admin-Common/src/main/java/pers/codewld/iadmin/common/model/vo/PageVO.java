@@ -10,8 +10,8 @@ import java.util.List;
 /**
  * 分页数据VO
  */
-@Data
 @ApiModel("分页数据VO")
+@Data
 public class PageVO<T> {
 
     @ApiModelProperty("总数")
