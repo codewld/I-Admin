@@ -16,7 +16,7 @@ import javax.validation.constraints.Min;
 import java.util.List;
 
 /**
- * 基本增删改查接口
+ * 基本增删改查 接口
  */
 @Validated
 public class BaseController<T> {

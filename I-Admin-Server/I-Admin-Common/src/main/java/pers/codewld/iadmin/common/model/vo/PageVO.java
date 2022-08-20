@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * 分页数据VO
+ * 分页数据 VO
  */
 @ApiModel("分页数据VO")
 @Data

@@ -70,7 +70,7 @@
 
             <dependency>
                 <groupId>pers.codewld</groupId>
-                <artifactId>I-Admin-CRUD</artifactId>
+                <artifactId>I-Admin-Generator</artifactId>
                 <version>${i-admin.version}</version>
             </dependency>
 

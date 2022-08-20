@@ -11,7 +11,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 /**
- * Swagger配置类
+ * Swagger 配置类
  */
 @Configuration
 @EnableOpenApi

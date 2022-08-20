@@ -11,7 +11,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 /**
- * 全局异常处理类
+ * 全局异常处理 接口增强类
  */
 @RestControllerAdvice
 public class ExceptionAdvice {
@@ -41,7 +41,7 @@ public class ExceptionAdvice {
     @ExceptionHandler({CustomException.class})
     public ResultVO customException(Exception e) {
         CustomException ex = (CustomException) e;
-        return ResultVO.result(ex.getResultCode(), ex.getMessage());
+        return ResultVO.result(ex.getCode(), ex.getMessage());
     }
 
     /**

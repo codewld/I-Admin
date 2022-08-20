@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 响应体
+ * 响应体 VO
  */
 @ApiModel("响应体")
 @Getter

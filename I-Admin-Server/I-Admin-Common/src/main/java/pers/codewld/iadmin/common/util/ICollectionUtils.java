@@ -3,7 +3,7 @@ package pers.codewld.iadmin.common.util;
 import java.util.*;
 
 /**
- * 集合工具类
+ * 集合 工具类
  */
 public class ICollectionUtils {
 

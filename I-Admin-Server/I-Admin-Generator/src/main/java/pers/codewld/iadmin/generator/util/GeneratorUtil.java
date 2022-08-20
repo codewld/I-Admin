@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.Scanner;
 
 /**
- * MyBatis Plus Generator工具类
+ * MyBatis Plus Generator 工具类
  */
 public class GeneratorUtil {
 

@@ -16,7 +16,7 @@ import pers.codewld.iadmin.common.model.vo.ResultVO;
 import java.util.Map;
 
 /**
- * 接口统一响应处理类
+ * 统一响应处理 接口增强类
  * <p>
  * 将接口返回结果加工为统一响应体
  */

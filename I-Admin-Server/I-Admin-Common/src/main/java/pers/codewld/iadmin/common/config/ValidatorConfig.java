@@ -8,7 +8,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 
 /**
- * Validator配置类
+ * Validator 配置类
  */
 @Configuration
 public class ValidatorConfig {

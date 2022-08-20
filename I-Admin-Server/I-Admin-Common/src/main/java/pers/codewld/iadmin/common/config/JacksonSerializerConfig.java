@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Jackson序列化配置类
+ * Jackson序列化 配置类
  */
 @Configuration
 public class JacksonSerializerConfig {
