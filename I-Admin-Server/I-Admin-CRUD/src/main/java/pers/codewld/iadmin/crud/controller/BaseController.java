@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pers.codewld.iadmin.common.model.vo.PageVO;
 import pers.codewld.iadmin.common.util.ICollectionUtils;
 import pers.codewld.iadmin.crud.model.param.QueryParam;
 
@@ -49,12 +50,12 @@ public class BaseController<T> {
 
     @ApiOperation("分页查询")
     @PostMapping("/page")
-    public Page<T> page(
+    public PageVO<T> page(
             @RequestParam(value = "pageNum", defaultValue = "1")  @Min(value = 1, message = "当前页数最小为1") @ApiParam("当前页数") Integer pageNum,
             @RequestParam(value = "pageSize", defaultValue = "1")  @Min(value = 1, message = "每页条数最小为1") @ApiParam("每页条数") Integer pageSize,
             @RequestBody @Validated QueryParam queryParam) {
         QueryWrapper<T> queryWrapper = getQueryWrapper(queryParam);
-        return baseService.page(new Page<>(pageNum, pageSize), queryWrapper);
+        return new PageVO<>(baseService.page(new Page<>(pageNum, pageSize), queryWrapper));
     }
 
     @ApiOperation("批量查询")
