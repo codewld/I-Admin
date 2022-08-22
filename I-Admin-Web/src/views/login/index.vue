@@ -1,12 +1,13 @@
 <!--登录页面-->
 <script setup lang="ts">
 import { Ref, ref } from 'vue'
-import 'element-plus/es/components/message/style/css'
 import { ElMessage } from 'element-plus'
+import 'element-plus/es/components/message/style/css'
 import { useRouter } from 'vue-router'
 import { useAccountStore } from '@/store'
 
 // -- 路由相关 --
+/** 路由 */
 const router = useRouter()
 
 
@@ -17,6 +18,7 @@ const loginFormData: Ref<Account.loginParam> = ref({
   password: ''
 })
 
+/** 账户信息全局存储 */
 const accountStore = useAccountStore()
 
 /**
@@ -41,12 +43,18 @@ const login = () => {
           <el-input type="password" v-model.trim="loginFormData.password" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item class="mt-6">
-          <el-button type="primary" class="w-full" @click="login">立即登录</el-button>
+          <el-button type="primary" class="w-full" @click="login">
+            立即登录
+          </el-button>
         </el-form-item>
       </el-form>
       <div>
-        <label class="text-gray-500">没有账号？</label>
-        <router-link to="/register" class="text-blue-500 hover:text-blue-700">注册新账号</router-link>
+        <label class="text-gray-500">
+          没有账号？
+        </label>
+        <router-link to="/register" class="text-blue-500 hover:text-blue-700">
+          注册新账号
+        </router-link>
       </div>
     </div>
   </div>

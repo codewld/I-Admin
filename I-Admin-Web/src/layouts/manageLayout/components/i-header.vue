@@ -3,6 +3,7 @@
 import { useRouter } from 'vue-router'
 
 // -- 路由相关 --
+/** 路由 */
 const router = useRouter()
 </script>
 

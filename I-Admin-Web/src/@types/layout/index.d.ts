@@ -1,4 +1,4 @@
-declare namespace System {
+declare namespace Layout {
 
   /**
    * 布局

@@ -7,7 +7,8 @@ import { ElMessage } from 'element-plus'
 import 'element-plus/es/components/message/style/css'
 
 // -- Hello World相关 --
-let msg = ref('Hello World!')
+/** Hello World文本 */
+const msg = ref('Hello World!')
 
 /**
  * 发送Hello World请求
@@ -24,6 +25,7 @@ const hello = () => {
 
 
 // -- 账户相关 --
+/** 账户信息全局存储 */
 const accountStore = useAccountStore()
 </script>
 
@@ -38,7 +40,9 @@ const accountStore = useAccountStore()
       <p class="text-9xl font-bold tracking-wider italic select-none hover:text-blue-400">
         {{ msg }}
       </p>
-      <el-button @click="hello" type="success" plain class="m-20">发个请求试试</el-button>
+      <el-button @click="hello" type="success" plain class="m-20">
+        发个请求试试
+      </el-button>
     </div>
   </div>
 </template>

@@ -1,8 +1,11 @@
 import { defineStore } from 'pinia'
 
+/**
+ * 布局信息全局存储
+ */
 export const useLayoutStore = defineStore({
   id: 'Layout',
-  state: (): System.layout => {
+  state: (): Layout.layout => {
     return {
       isAsideFold: false
     }

@@ -6,6 +6,7 @@ import IAside from './components/i-aside.vue'
 import { useLayoutStore } from '@/store'
 
 // -- 侧边栏相关 --
+/** 布局信息全局存储 */
 const layoutStore = useLayoutStore()
 
 onMounted(() => {

@@ -6,13 +6,12 @@ import { Fold, Expand, User, House } from '@element-plus/icons-vue'
 import { useLayoutStore } from '@/store/modules/layoutState'
 
 // -- 路由相关 --
-const route = useRoute()
-
 /** 当前路由 */
-const activeRoute = computed(() => route.path)
+const activeRoute = computed(() => useRoute().path)
 
 
 // -- 侧边栏相关 --
+/** 布局信息全局存储 */
 const layoutStore = useLayoutStore()
 
 /** 侧边栏切换按钮是否可见 */
@@ -43,19 +42,31 @@ const triggerAside = async () => {
         </el-tooltip>
       </div>
       <el-menu-item index="/home">
-        <el-icon><house/></el-icon>
-        <span>首页</span>
+        <el-icon>
+          <house/>
+        </el-icon>
+        <span>
+          首页
+        </span>
       </el-menu-item>
       <el-sub-menu index="/am">
         <template #title>
-          <el-icon><user/></el-icon>
-          <span>权限管理</span>
+          <el-icon>
+            <user/>
+          </el-icon>
+          <span>
+            权限管理
+          </span>
         </template>
         <el-menu-item index="/am/admin">
-          <span>后台用户管理</span>
+          <span>
+            后台用户管理
+          </span>
         </el-menu-item>
         <el-menu-item index="/am/role">
-          <span>角色管理</span>
+          <span>
+            角色管理
+          </span>
         </el-menu-item>
       </el-sub-menu>
     </el-menu>
