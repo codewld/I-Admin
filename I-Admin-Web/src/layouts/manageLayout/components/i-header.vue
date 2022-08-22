@@ -13,7 +13,7 @@ const router = useRouter()
         I-Admin
       </h1>
       <div class="space-x-4">
-        <el-button type="text" class="text-red-500">
+        <el-button link class="text-red-500">
           退出登录
         </el-button>
       </div>
