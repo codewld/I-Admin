@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import pers.codewld.iadmin.common.model.enums.ResultCode;
 
 /**
  * 响应体 VO
@@ -24,45 +25,23 @@ public class ResultVO {
     private final Object data;
 
     public static ResultVO success() {
-        return new ResultVO(Code.SUCCESS.getCode(), Code.SUCCESS.getMsg(), null);
+        return new ResultVO(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMsg(), null);
     }
 
     public static ResultVO success(Object data) {
-        return new ResultVO(Code.SUCCESS.getCode(), Code.SUCCESS.getMsg(), data);
+        return new ResultVO(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMsg(), data);
     }
 
     public static ResultVO fail() {
-        return new ResultVO(Code.FAILED.getCode(), Code.FAILED.getMsg(), null);
+        return new ResultVO(ResultCode.FAILED.getCode(), ResultCode.FAILED.getMsg(), null);
     }
 
-    public static ResultVO result(Code code, String msg) {
-        return new ResultVO(code.getCode(), msg, null);
+    public static ResultVO result(ResultCode resultCode) {
+        return new ResultVO(resultCode.getCode(), resultCode.getMsg(), null);
     }
 
-    /**
-     * 响应体-状态码及描述
-     */
-    @Getter
-    @AllArgsConstructor
-    @ApiModel("响应体-状态码及描述")
-    public enum Code {
-
-        SUCCESS(0, "操作成功"),
-
-        FAILED(1000, "操作失败"),
-
-        VALIDATE_FAILED(2000, "参数错误"),
-
-        UNAUTHORIZED(8000, "未登录"),
-
-        FORBIDDEN(9000, "未授权");
-
-        @ApiModelProperty("状态码")
-        private final int code;
-
-        @ApiModelProperty("描述")
-        private final String msg;
-
+    public static ResultVO result(ResultCode resultCode, String msg) {
+        return new ResultVO(resultCode.getCode(), msg, null);
     }
 
 }
