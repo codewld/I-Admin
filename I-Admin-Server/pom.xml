@@ -19,7 +19,7 @@
 
     <groupId>pers.codewld</groupId>
     <artifactId>I-Admin-Server</artifactId>
-    <version>${i-admin.version}</version>
+    <version>0.0.1-SNAPSHOT</version>
     <name>I-Admin-Server</name>
     <description>I-Admin-Server</description>
     <packaging>pom</packaging>

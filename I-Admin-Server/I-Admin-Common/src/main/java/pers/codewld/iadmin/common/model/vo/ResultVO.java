@@ -10,7 +10,7 @@ import pers.codewld.iadmin.common.model.enums.ResultCode;
 /**
  * 响应体 VO
  */
-@ApiModel("响应体")
+@ApiModel("响应体 VO")
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ResultVO {

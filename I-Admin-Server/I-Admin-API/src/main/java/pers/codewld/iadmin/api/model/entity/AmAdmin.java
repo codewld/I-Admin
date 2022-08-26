@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 /**
  * 权限-后台用户 实体类
  */
-@ApiModel("权限-后台用户")
+@ApiModel("权限-后台用户 实体类")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
