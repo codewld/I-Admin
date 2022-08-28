@@ -58,6 +58,7 @@
         <java-jwt.version>4.0.0</java-jwt.version>
         <swagger.version>3.0.0</swagger.version>
         <mysql.version>8.0.30</mysql.version>
+        <druid.version>1.2.11</druid.version>
         <mybatis-plus.version>3.5.2</mybatis-plus.version>
         <mybatis-plus-generator.version>3.5.3</mybatis-plus-generator.version>
     </properties>
@@ -160,6 +161,13 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <scope>runtime</scope>
                 <version>${mysql.version}</version>
+            </dependency>
+
+            <!-- Druid -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
             </dependency>
 
             <!-- Mybatis-Plus -->
