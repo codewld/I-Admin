@@ -17,3 +17,13 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# Security
+security:
+  jwt:
+    # 请求头字段名
+    headerField: Authorization
+    # 密钥
+    secret: I-Admin
+    # 过期时长，以秒为单位
+    expiration: 3600

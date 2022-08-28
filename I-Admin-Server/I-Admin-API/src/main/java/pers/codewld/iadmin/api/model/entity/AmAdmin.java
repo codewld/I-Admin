@@ -1,12 +1,13 @@
 package pers.codewld.iadmin.api.model.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import pers.codewld.iadmin.security.model.IUserDetails;
 
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -19,15 +20,15 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @TableName("am_admin")
-public class AmAdmin implements Serializable {
+public class AmAdmin extends IUserDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("id")
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
+    private String id;
 
     @ApiModelProperty("用户名")
     @Size(min = 5, max = 20, message = "用户名长度应在5-20之间")

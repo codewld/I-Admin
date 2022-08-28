@@ -21,6 +21,8 @@ public enum ResultCode {
 
     UNAUTHORIZED(8000, "未登录"),
 
+    INVALID_CREDENTIAL(8100, "无效凭证"),
+
     FORBIDDEN(9000, "未授权");
 
     @ApiModelProperty("状态码")

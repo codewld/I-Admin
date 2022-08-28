@@ -10,10 +10,10 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>I-Admin-API</artifactId>
+    <artifactId>I-Admin-Security</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>I-Admin-API</name>
-    <description>I-Admin-API</description>
+    <name>I-Admin-Security</name>
+    <description>I-Admin-Security</description>
 
     <dependencies>
         <dependency>
@@ -21,9 +21,16 @@
             <artifactId>I-Admin-Common</artifactId>
         </dependency>
 
+        <!-- Spring Boot Security -->
         <dependency>
-            <groupId>pers.codewld</groupId>
-            <artifactId>I-Admin-Security</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- JAVA JWT -->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
         </dependency>
     </dependencies>
 
