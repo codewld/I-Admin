@@ -57,6 +57,7 @@
         <spring-boot.version>2.5.14</spring-boot.version>
         <java-jwt.version>4.0.0</java-jwt.version>
         <swagger.version>3.0.0</swagger.version>
+        <lambok.version>1.18.24</lambok.version>
         <mysql.version>8.0.30</mysql.version>
         <druid.version>1.2.11</druid.version>
         <mybatis-plus.version>3.5.2</mybatis-plus.version>
@@ -151,7 +152,7 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.24</version>
+                <version>${lambok.version}</version>
                 <scope>provided</scope>
             </dependency>
 
