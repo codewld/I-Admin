@@ -1,6 +1,5 @@
 package pers.codewld.iadmin.api.service.impl;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pers.codewld.iadmin.api.model.entity.AmAdmin;
@@ -10,6 +9,7 @@ import pers.codewld.iadmin.api.service.AmAdminService;
 import pers.codewld.iadmin.common.exception.CustomException;
 import pers.codewld.iadmin.common.model.enums.ResultCode;
 import pers.codewld.iadmin.security.util.JWTUtils;
+import pers.codewld.iadmin.security.util.MD5Utils;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -23,9 +23,6 @@ public class AccountServiceImpl implements AccountService {
     @Resource
     AmAdminService amAdminService;
 
-    @Resource
-    PasswordEncoder md5PasswordEncoder;
-
     @Transactional
     @Override
     public String login(LoginParam loginParam) {
@@ -36,7 +33,7 @@ public class AccountServiceImpl implements AccountService {
                 .eq(AmAdmin::getUsername, loginParam.getUsername())
                 .one();
         // 校验账号密码
-        if (loadedAmAdmin == null || !md5PasswordEncoder.matches(loginParam.getPassword(), loadedAmAdmin.getPassword())) {
+        if (loadedAmAdmin == null || !MD5Utils.matches(loginParam.getPassword(), loadedAmAdmin.getPassword())) {
             throw new CustomException(ResultCode.FORBIDDEN, "账号密码错误");
         }
         // 保存登录记录
