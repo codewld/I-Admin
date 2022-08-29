@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import pers.codewld.iadmin.security.model.IUserDetails;
+import pers.codewld.iadmin.security.model.entity.IUserDetails;
 
 import javax.validation.constraints.Size;
 import java.io.Serializable;
