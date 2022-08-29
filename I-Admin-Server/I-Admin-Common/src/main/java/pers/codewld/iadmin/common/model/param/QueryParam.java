@@ -10,9 +10,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * 查询参数
+ * 查询参数 参数类
  */
-@ApiModel("查询参数")
+@ApiModel("查询参数 参数类")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

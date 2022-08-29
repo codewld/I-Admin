@@ -1,4 +1,4 @@
-package pers.codewld.iadmin.security.model;
+package pers.codewld.iadmin.security.model.entity;
 
 import lombok.Getter;
 import lombok.Setter;

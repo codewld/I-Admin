@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pers.codewld.iadmin.common.controller.ErrController;
 import pers.codewld.iadmin.common.exception.CustomException;
-import pers.codewld.iadmin.security.model.IUserDetails;
+import pers.codewld.iadmin.security.model.entity.IUserDetails;
 import pers.codewld.iadmin.security.util.JWTUtil;
 
 import javax.annotation.Resource;

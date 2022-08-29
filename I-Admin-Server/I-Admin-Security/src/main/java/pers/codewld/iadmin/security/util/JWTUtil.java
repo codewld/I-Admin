@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import pers.codewld.iadmin.common.exception.CustomException;
 import pers.codewld.iadmin.common.model.enums.ResultCode;
-import pers.codewld.iadmin.security.model.IUserDetails;
+import pers.codewld.iadmin.security.model.entity.IUserDetails;
 
 import java.util.Date;
 import java.util.List;
