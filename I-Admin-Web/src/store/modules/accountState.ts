@@ -7,7 +7,16 @@ export const useAccountStore = defineStore({
   id: 'Account',
   state: (): Account.account => {
     return {
-      username: ''
+      username: '',
+      JWT: undefined
+    }
+  },
+  getters: {
+    /**
+     * 已登录
+     */
+    isLoggedIn: state => {
+      return state.JWT !== undefined
     }
   },
   actions: {
@@ -16,6 +25,12 @@ export const useAccountStore = defineStore({
      */
     setUsername(username: string) {
       this.username = username
+    },
+    /**
+     * 设置JWT
+     */
+    setJWT(JWT: string) {
+      this.JWT = JWT
     }
   },
   persist: true

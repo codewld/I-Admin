@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus'
 import 'element-plus/es/components/message/style/css'
 import { useRouter } from 'vue-router'
 import { useAccountStore } from '@/store'
+import { rLogin } from '@/api/account'
 
 // -- 路由相关 --
 /** 路由 */
@@ -25,9 +26,15 @@ const accountStore = useAccountStore()
  * 登录
  */
 const login = () => {
-  accountStore.setUsername(loginFormData.value.username)
-  router.push({ name: 'home' })
-  ElMessage.success('登录成功')
+  rLogin(loginFormData)
+      .then(res => {
+        accountStore.setUsername(loginFormData.value.username)
+        accountStore.setJWT(res)
+        router.push({ name: 'home' })
+        ElMessage.success('登录成功')
+      }).catch(err => {
+        ElMessage.warning(err)
+      })
 }
 </script>
 

@@ -1,7 +1,8 @@
 import axios, { AxiosRequestConfig, Method } from 'axios'
-import { SERVER_HOST, SERVER_PORT } from '@/config'
+import { SERVER_HOST, SERVER_PORT, JWT_HEADER_FIELD } from '@/config'
 import { unref } from 'vue'
 import useLoading from '@/composables/useLoading'
+import { useAccountStore } from '@/store'
 
 /** axios实例 */
 const instance = axios.create({
@@ -13,7 +14,11 @@ const instance = axios.create({
  * 请求拦截器
  */
 instance.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config: any) => {
+    const accountStore = useAccountStore()
+    if (accountStore.isLoggedIn) {
+      config.headers[JWT_HEADER_FIELD] = accountStore.JWT
+    }
     return config
   }, () => {
     return Promise.reject('网络错误')
