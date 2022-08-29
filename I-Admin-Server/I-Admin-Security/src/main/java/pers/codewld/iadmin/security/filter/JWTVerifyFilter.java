@@ -10,9 +10,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import pers.codewld.iadmin.common.controller.ErrController;
 import pers.codewld.iadmin.common.exception.CustomException;
 import pers.codewld.iadmin.security.model.entity.IUserDetails;
-import pers.codewld.iadmin.security.util.JWTUtil;
+import pers.codewld.iadmin.security.util.JWTUtils;
 
-import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,9 +24,6 @@ import java.io.IOException;
 @Component
 public class JWTVerifyFilter extends OncePerRequestFilter {
 
-    @Resource
-    JWTUtil jwtUtil;
-
     @Value("${security.jwt.headerField}")
     String headerField;
 
@@ -36,7 +32,7 @@ public class JWTVerifyFilter extends OncePerRequestFilter {
         String jwtToken = request.getHeader(headerField);
         if (jwtToken != null) {
             try {
-                IUserDetails iUserDetails = jwtUtil.decode(jwtToken);
+                IUserDetails iUserDetails = JWTUtils.decode(jwtToken);
                 Authentication authentication = new UsernamePasswordAuthenticationToken(iUserDetails.getId(), null, null);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (CustomException e) {

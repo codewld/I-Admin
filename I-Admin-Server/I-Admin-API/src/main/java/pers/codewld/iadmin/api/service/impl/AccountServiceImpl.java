@@ -9,7 +9,7 @@ import pers.codewld.iadmin.api.service.AccountService;
 import pers.codewld.iadmin.api.service.AmAdminService;
 import pers.codewld.iadmin.common.exception.CustomException;
 import pers.codewld.iadmin.common.model.enums.ResultCode;
-import pers.codewld.iadmin.security.util.JWTUtil;
+import pers.codewld.iadmin.security.util.JWTUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -25,9 +25,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Resource
     PasswordEncoder md5PasswordEncoder;
-
-    @Resource
-    JWTUtil jwtUtil;
 
     @Transactional
     @Override
@@ -52,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
             throw new CustomException(ResultCode.FAILED);
         }
         // 生成jwt
-        return jwtUtil.sign(loadedAmAdmin);
+        return JWTUtils.sign(loadedAmAdmin);
     }
 
 }

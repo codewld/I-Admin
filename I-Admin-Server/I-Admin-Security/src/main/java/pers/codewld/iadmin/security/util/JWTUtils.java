@@ -4,40 +4,39 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import pers.codewld.iadmin.common.exception.CustomException;
 import pers.codewld.iadmin.common.model.enums.ResultCode;
+import pers.codewld.iadmin.common.util.ContextUtils;
 import pers.codewld.iadmin.security.model.entity.IUserDetails;
 
 import java.util.Date;
 import java.util.List;
 
 /**
- * JWT 工具类类
+ * JWT 工具类
  */
-@Component
-public class JWTUtil {
+public class JWTUtils {
 
     /** 过期时长，以秒为单位 */
-    private final Long expiration;
+    private static final Long expiration;
 
     /** 加密/解密算法 */
-    Algorithm algorithm;
+    private static final Algorithm algorithm;
 
     /** JWT校验器 */
-    JWTVerifier jwtVerifier;
+    private static final JWTVerifier jwtVerifier;
 
-    public JWTUtil(@Value("${security.jwt.secret}") String secret, @Value("${security.jwt.expiration}") Long expiration) {
-        this.expiration = expiration;
-        this.algorithm = Algorithm.HMAC256(secret);
-        this.jwtVerifier = JWT.require(algorithm).build();
+    static {
+        String secret = ContextUtils.getProperty("security.jwt.secret");
+        expiration = Long.valueOf(ContextUtils.getProperty("security.jwt.expiration"));
+        algorithm = Algorithm.HMAC256(secret);
+        jwtVerifier = JWT.require(algorithm).build();
     }
 
     /**
      * 签发
      */
-    public String sign(IUserDetails iUserDetails) {
+    public static String sign(IUserDetails iUserDetails) {
         return JWT
                 .create()
                 .withAudience(iUserDetails.getId())
@@ -51,7 +50,7 @@ public class JWTUtil {
     /**
      * 解析
      */
-    public IUserDetails decode(String token) {
+    public static IUserDetails decode(String token) {
         try {
             // 校验
             DecodedJWT decodedJWT = jwtVerifier.verify(token);
