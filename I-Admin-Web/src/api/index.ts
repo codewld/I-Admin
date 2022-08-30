@@ -3,6 +3,7 @@ import { SERVER_HOST, SERVER_PORT, JWT_HEADER_FIELD } from '@/config'
 import { unref } from 'vue'
 import useLoading from '@/composables/useLoading'
 import { useAccountStore } from '@/store'
+import useAccount from '@/composables/useAccount'
 
 /** axios实例 */
 const instance = axios.create({
@@ -32,6 +33,12 @@ instance.interceptors.response.use(
   res => {
     if (res.data.code === 0) {
       return res.data.data
+    }
+    // 身份验证错误
+    if (res.data.code >= 8000 && res.data.code < 9000) {
+      const { logout } = useAccount()
+      logout()
+      return Promise.reject('身份验证失败，自动退出登录')
     }
     return Promise.reject(res.data.msg)
   }, () => {
