@@ -1,10 +1,36 @@
 <!--管理页面布局-顶栏-->
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import { ElMessageBox } from 'element-plus'
+import 'element-plus/es/components/message-box/style/css'
+import useAccount from '@/composables/useAccount'
 
 // -- 路由相关 --
 /** 路由 */
 const router = useRouter()
+
+
+// -- 退出登录相关 --
+/**
+ * 退出登录
+ */
+const handleLogout = () => {
+  ElMessageBox.confirm(
+      '是否要退出登录?',
+      '提醒',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }
+  )
+      .then(() => {
+        const { logout } = useAccount()
+        logout()
+      })
+      .catch(() => {
+      })
+}
 </script>
 
 <template>
@@ -14,7 +40,7 @@ const router = useRouter()
         I-Admin
       </h1>
       <div class="space-x-4">
-        <el-button link class="text-red-500">
+        <el-button link class="text-red-500" @click="handleLogout">
           退出登录
         </el-button>
       </div>
