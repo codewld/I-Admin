@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 
+
 /**
  * 布局信息全局存储
  */

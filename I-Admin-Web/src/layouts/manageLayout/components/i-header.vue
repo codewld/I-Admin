@@ -7,6 +7,7 @@ import useAccount from '@/composables/useAccount'
 import { Avatar } from '@element-plus/icons-vue'
 import { useAccountStore } from '@/store'
 
+
 // -- 路由相关 --
 /** 路由 */
 const router = useRouter()
@@ -53,7 +54,7 @@ const handleLogout = () => {
           </el-icon>
           {{ accountStore.username }}
         </el-button>
-        <el-button link class="text-red-500" @click="handleLogout">
+        <el-button @click="handleLogout" link class="text-red-500">
           退出登录
         </el-button>
       </div>

@@ -1,4 +1,5 @@
-import request from '@/api/index';
+import request from '@/api/index'
+
 
 /**
  * hello

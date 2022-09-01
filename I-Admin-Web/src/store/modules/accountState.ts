@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 
+
 /**
  * 账户信息全局存储
  */
