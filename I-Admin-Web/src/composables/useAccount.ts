@@ -14,7 +14,7 @@ export default function useAccount() {
    */
   const logout = (showMessage?: boolean): void => {
     // 重置accountStore
-    let accountStore = useAccountStore()
+    const accountStore = useAccountStore()
     accountStore.$reset()
     // 跳转至登录页
     router.replace({ name: 'login' })
