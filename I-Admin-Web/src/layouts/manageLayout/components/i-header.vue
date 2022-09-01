@@ -4,10 +4,17 @@ import { useRouter } from 'vue-router'
 import { ElMessageBox } from 'element-plus'
 import 'element-plus/es/components/message-box/style/css'
 import useAccount from '@/composables/useAccount'
+import { Avatar } from '@element-plus/icons-vue'
+import { useAccountStore } from '@/store'
 
 // -- 路由相关 --
 /** 路由 */
 const router = useRouter()
+
+
+// -- 账户相关 --
+/** 账户信息全局存储 */
+const accountStore = useAccountStore()
 
 
 // -- 退出登录相关 --
@@ -40,6 +47,12 @@ const handleLogout = () => {
         I-Admin
       </h1>
       <div class="space-x-4">
+        <el-button link>
+          <el-icon class="mr-0.5">
+            <avatar/>
+          </el-icon>
+          {{ accountStore.username }}
+        </el-button>
         <el-button link class="text-red-500" @click="handleLogout">
           退出登录
         </el-button>
