@@ -26,7 +26,7 @@ const handleLogout = () => {
   )
       .then(() => {
         const { logout } = useAccount()
-        logout()
+        logout(true)
       })
       .catch(() => {
       })
