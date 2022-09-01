@@ -61,4 +61,29 @@ const router = createRouter({
   ]
 })
 
+/**
+ * 路由导航守卫
+ */
+router.beforeEach(async (to, from, next) => {
+  const accountStore = useAccountStore()
+  const { logout } = useAccount()
+  // 未登录
+  if (!accountStore.isLoggedIn) {
+    if (to.name !== 'login') {
+      logout()
+      ElMessage.warning('请重新登录')
+      next()
+      return
+    }
+    next()
+    return
+  }
+  if (to.name === 'login') {
+    ElMessage.warning('您已登录')
+    next(from)
+    return
+  }
+  next()
+})
+
 export default router
