@@ -1,9 +1,9 @@
 <!--管理页面布局-侧边栏-->
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { computed, ref, nextTick } from 'vue'
+import { computed } from 'vue'
 import { Fold, Expand, User, House } from '@element-plus/icons-vue'
-import { useLayoutStore } from '@/store/modules/layoutState'
+import useLayout from '@/composables/useLayout'
 
 
 // -- 路由相关 --
@@ -11,33 +11,17 @@ import { useLayoutStore } from '@/store/modules/layoutState'
 const activeRoute = computed(() => useRoute().path)
 
 
-// -- 侧边栏相关 --
-/** 布局信息全局存储 */
-const layoutStore = useLayoutStore()
-
-/** 侧边栏切换按钮是否可见 */
-const AsideTriggerVisible = ref(true)
-
-/**
- * 切换侧边栏
- */
-const triggerAside = async () => {
-  AsideTriggerVisible.value = false
-  await nextTick()
-  layoutStore.setAsideFold()
-  setTimeout(() => {
-    AsideTriggerVisible.value = true
-  }, 300)
-}
+// -- 布局相关 --
+const { triggerAside, getAsideWidth, isAsideFold } = useLayout()
 </script>
 
 <template>
-  <el-aside :width="layoutStore.getAsideWidth" class="duration-300 overflow-x-hidden">
-    <el-menu router :default-active="activeRoute" :collapse="layoutStore.isAsideFold" class="h-full select-none">
+  <el-scrollbar :class="{fold: isAsideFold()}">
+    <el-menu router :default-active="activeRoute" :collapse="isAsideFold()" :width="getAsideWidth()" :collapse-transition="false" class="h-full select-none">
       <div class="h-8 flex justify-center items-center border-b">
-        <el-tooltip :content="layoutStore.isAsideFold ? '展开菜单' : '折叠菜单'">
-          <el-icon v-if="AsideTriggerVisible" :size="16" @click="triggerAside" class="cursor-pointer">
-            <fold v-if="!layoutStore.isAsideFold"/>
+        <el-tooltip :content="isAsideFold() ? '展开菜单' : '折叠菜单'">
+          <el-icon :size="16" @click="triggerAside" class="cursor-pointer">
+            <fold v-if="!isAsideFold()"/>
             <expand v-else/>
           </el-icon>
         </el-tooltip>
@@ -71,5 +55,23 @@ const triggerAside = async () => {
         </el-menu-item>
       </el-sub-menu>
     </el-menu>
-  </el-aside>
+  </el-scrollbar>
 </template>
+
+<style scoped>
+.el-scrollbar {
+  overflow: unset;
+}
+
+:deep(.el-scrollbar__view) {
+  height: 100%;
+}
+
+.el-scrollbar, .el-scrollbar :deep(.el-scrollbar__wrap) {
+  width: 205px;
+}
+
+.el-scrollbar.fold, .el-scrollbar.fold :deep(.el-scrollbar__wrap) {
+  width: 65px;
+}
+</style>
