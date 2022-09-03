@@ -2,14 +2,9 @@ import { defineComponent } from 'vue'
 import { ElScrollbar, ElSpace } from 'element-plus'
 import 'element-plus/es/components/scrollbar/style/css'
 import 'element-plus/es/components/space/style/css'
-import './index.css'
+import './css/index.css'
 
 
-/**
- * 容器组件
- * <p>集成了el-scrollbar和el-space，适用于布局多个垂直块元素
- * <p>写成jsx形式以避免el-space误处理注释导致其占据空间
- */
 export default defineComponent({
   components: {
     ElScrollbar,
