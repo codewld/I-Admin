@@ -21,7 +21,7 @@ export default defineComponent({
         <el-scrollbar>
           <el-space direction="vertical" fill>
             {/* 读取默认插槽中的内容，排除注释 */}
-            {this.$slots.default?.().filter(o => typeof o.type !== 'symbol')}
+            {this.$slots.default?.().filter(o => typeof o.type !== 'symbol' || o.type.description !== 'Comment') }
           </el-space>
         </el-scrollbar>
       </div>
