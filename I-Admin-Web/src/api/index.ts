@@ -52,25 +52,21 @@ instance.interceptors.response.use(
  * 发送网络请求
  * @param path 请求路径
  * @param method HTTP方法
- * @param data 数据
+ * @param params URL参数
+ * @param data 请求体参数
  * @param isLoading 是否展示加载动画
  * @param loadingText 加载动画的提示文字
  * @return Promise 响应数据
  */
-function request<T, R>(path: string, method: Method = 'get', data?: T, isLoading: boolean = false, loadingText: string = '加载中'): Promise<R> {
-
-  const unrefData = unref(data)
+function request<P, T, R>(path: string, method: Method = 'get', params?: P, data?: T, isLoading: boolean = false, loadingText: string = '加载中'): Promise<R> {
 
   const requestConfig: AxiosRequestConfig = {
     url: path,
     method: method
   }
 
-  if (['GET', 'get'].includes(method)) {
-    requestConfig.params = unrefData
-  } else {
-    requestConfig.data = unrefData
-  }
+  requestConfig.params = unref(params)
+  requestConfig.data = unref(data)
 
   return new Promise((resolve, reject) => {
 
