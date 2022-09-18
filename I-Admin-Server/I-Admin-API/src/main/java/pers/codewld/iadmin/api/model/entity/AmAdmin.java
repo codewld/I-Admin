@@ -1,6 +1,7 @@
 package pers.codewld.iadmin.api.model.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import pers.codewld.iadmin.security.model.entity.IUserDetails;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 权限-后台用户 实体类
@@ -22,6 +24,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @TableName("am_admin")
+@JsonIgnoreProperties({"enabled", "accountNonExpired", "credentialsNonExpired", "accountNonLocked", "password"})
 public class AmAdmin extends IUserDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -60,4 +63,7 @@ public class AmAdmin extends IUserDetails implements Serializable {
 
     @ApiModelProperty("最后登录时间")
     private LocalDateTime lastLoginTime;
+
+    @TableField(exist = false)
+    private List<String> roleIdList;
 }
