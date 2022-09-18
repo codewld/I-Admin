@@ -14,7 +14,12 @@ export default function useLoading() {
    * 开始加载动画
    * @param config 配置
    */
-  const startLoading = (config: Parameters<typeof ElLoading.service>[0]) => {
+  const startLoading = (config?: Parameters<typeof ElLoading.service>[0]) => {
+    if (!config) {
+      config = {
+        text: '加载中。。。'
+      }
+    }
     loadingInstance = ElLoading.service(config)
   }
 
