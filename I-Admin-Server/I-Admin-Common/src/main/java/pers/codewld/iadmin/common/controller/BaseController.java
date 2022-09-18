@@ -5,11 +5,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pers.codewld.iadmin.common.model.param.QueryParam;
 import pers.codewld.iadmin.common.model.vo.PageVO;
 import pers.codewld.iadmin.common.util.ICollectionUtils;
-import pers.codewld.iadmin.common.model.param.QueryParam;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
@@ -53,14 +54,14 @@ public class BaseController<T> {
     public PageVO<T> page(
             @ApiParam("当前页数") @RequestParam(value = "pageNum", defaultValue = "1") @Min(value = 1, message = "当前页数最小为1") Integer pageNum,
             @ApiParam("每页条数") @RequestParam(value = "pageSize", defaultValue = "5") @Min(value = 1, message = "每页条数最小为1") Integer pageSize,
-            @RequestBody @Validated QueryParam queryParam) {
+            @RequestBody(required = false) @Validated QueryParam queryParam) {
         QueryWrapper<T> queryWrapper = getQueryWrapper(queryParam);
         return new PageVO<>(baseService.page(new Page<>(pageNum, pageSize), queryWrapper));
     }
 
     @ApiOperation("批量查询")
     @PostMapping("/list")
-    public List<T> list(@RequestBody @Validated QueryParam queryParam) {
+    public List<T> list(@RequestBody(required = false) @Validated QueryParam queryParam) {
         QueryWrapper<T> queryWrapper = getQueryWrapper(queryParam);
         return baseService.list(queryWrapper);
     }
@@ -70,8 +71,12 @@ public class BaseController<T> {
      * @param queryParam 查询参数
      * @return QueryWrapper
      */
-    private QueryWrapper<T> getQueryWrapper(QueryParam queryParam) {
+    private QueryWrapper<T> getQueryWrapper(@Nullable QueryParam queryParam) {
         QueryWrapper<T> queryWrapper = new QueryWrapper<>();
+
+        if (queryParam == null) {
+            return queryWrapper;
+        }
 
         // 查询条件
         ICollectionUtils.deNull(queryParam.getConditions()).forEach(item -> {
