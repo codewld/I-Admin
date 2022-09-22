@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.codewld.iadmin.common.model.param.QueryParam;
 import pers.codewld.iadmin.common.model.vo.PageVO;
+import pers.codewld.iadmin.common.util.CaseFormatUtils;
 import pers.codewld.iadmin.common.util.ICollectionUtils;
 
 import javax.annotation.Resource;
@@ -81,54 +82,56 @@ public class BaseController<T> {
         // 查询条件
         ICollectionUtils.deNull(queryParam.getConditions()).forEach(item -> {
             QueryParam.Condition.Operator operator = item.getOperator();
+            String field = item.getField();
+            field = CaseFormatUtils.camelCase2UnderScoreCase(field);
             switch (operator) {
                 case EQ:
-                    queryWrapper.eq(item.getField(), item.getValue().get(0));
+                    queryWrapper.eq(field, item.getValue().get(0));
                     break;
                 case NE:
-                    queryWrapper.ne(item.getField(), item.getValue().get(0));
+                    queryWrapper.ne(field, item.getValue().get(0));
                     break;
                 case GT:
-                    queryWrapper.gt(item.getField(), item.getValue().get(0));
+                    queryWrapper.gt(field, item.getValue().get(0));
                     break;
                 case GE:
-                    queryWrapper.ge(item.getField(), item.getValue().get(0));
+                    queryWrapper.ge(field, item.getValue().get(0));
                     break;
                 case LT:
-                    queryWrapper.lt(item.getField(), item.getValue().get(0));
+                    queryWrapper.lt(field, item.getValue().get(0));
                     break;
                 case LE:
-                    queryWrapper.le(item.getField(), item.getValue().get(0));
+                    queryWrapper.le(field, item.getValue().get(0));
                     break;
                 case BETWEEN:
-                    queryWrapper.between(item.getField(), item.getValue().get(0), item.getValue().get(1));
+                    queryWrapper.between(field, item.getValue().get(0), item.getValue().get(1));
                     break;
                 case NOT_BETWEEN:
-                    queryWrapper.notBetween(item.getField(), item.getValue().get(0), item.getValue().get(1));
+                    queryWrapper.notBetween(field, item.getValue().get(0), item.getValue().get(1));
                     break;
                 case LIKE:
-                    queryWrapper.like(item.getField(), item.getValue().get(0));
+                    queryWrapper.like(field, item.getValue().get(0));
                     break;
                 case NOT_LIKE:
-                    queryWrapper.notLike(item.getField(), item.getValue().get(0));
+                    queryWrapper.notLike(field, item.getValue().get(0));
                     break;
                 case LIKE_LEFT:
-                    queryWrapper.likeLeft(item.getField(), item.getValue().get(0));
+                    queryWrapper.likeLeft(field, item.getValue().get(0));
                     break;
                 case LIKE_RIGHT:
-                    queryWrapper.likeRight(item.getField(), item.getValue().get(0));
+                    queryWrapper.likeRight(field, item.getValue().get(0));
                     break;
                 case IS_NULL:
-                    queryWrapper.isNull(item.getField());
+                    queryWrapper.isNull(field);
                     break;
                 case IS_NOT_NULL:
-                    queryWrapper.isNotNull(item.getField());
+                    queryWrapper.isNotNull(field);
                     break;
                 case IN:
-                    queryWrapper.in(item.getField(), item.getValue().get(0));
+                    queryWrapper.in(field, item.getValue().get(0));
                     break;
                 case NOT_IN:
-                    queryWrapper.notIn(item.getField(), item.getValue().get(0));
+                    queryWrapper.notIn(field, item.getValue().get(0));
                     break;
                 default:
             }
