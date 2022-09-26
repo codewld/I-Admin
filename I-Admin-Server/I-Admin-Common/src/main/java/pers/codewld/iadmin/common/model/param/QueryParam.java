@@ -18,6 +18,9 @@ import java.util.List;
 @NoArgsConstructor
 public class QueryParam {
 
+    @ApiModelProperty("字段列表")
+    List<String> fields = Collections.emptyList();
+
     @ApiModelProperty("条件列表")
     List<Condition> conditions = Collections.emptyList();
 

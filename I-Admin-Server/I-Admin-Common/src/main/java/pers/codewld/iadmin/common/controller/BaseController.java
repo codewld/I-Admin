@@ -79,6 +79,13 @@ public class BaseController<T> {
             return queryWrapper;
         }
 
+        // 字段列表
+        String[] collect = ICollectionUtils.deNull(queryParam.getFields())
+                .stream()
+                .map(CaseFormatUtils::camelCase2UnderScoreCase)
+                .toArray(String[]::new);
+        queryWrapper.select(collect);
+
         // 查询条件
         ICollectionUtils.deNull(queryParam.getConditions()).forEach(item -> {
             QueryParam.Condition.Operator operator = item.getOperator();
