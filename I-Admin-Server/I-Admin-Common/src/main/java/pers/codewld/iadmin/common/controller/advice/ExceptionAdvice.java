@@ -51,7 +51,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(Exception.class)
     public ResultVO exception(Exception e) {
         e.printStackTrace();
-        return ResultVO.result(ResultCode.FAILED, e.getMessage());
+        return ResultVO.result(ResultCode.FAILED, "操作失败");
     }
 
 }
