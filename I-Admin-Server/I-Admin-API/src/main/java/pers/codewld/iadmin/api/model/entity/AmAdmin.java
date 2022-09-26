@@ -24,7 +24,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @TableName("am_admin")
-@JsonIgnoreProperties({"enabled", "accountNonExpired", "credentialsNonExpired", "accountNonLocked", "password"})
+@JsonIgnoreProperties({"enabled", "accountNonExpired", "credentialsNonExpired", "accountNonLocked"})
 public class AmAdmin extends IUserDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
