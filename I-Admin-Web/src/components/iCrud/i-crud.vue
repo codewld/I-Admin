@@ -55,6 +55,13 @@ const props = defineProps({
   hasSearch: {
     type: Boolean,
     default: () => true
+  },
+  /**
+   * 操作执行前的回调
+   */
+  beforeDoActionCallback: {
+    type: Function as PropType<crud.beforeDoActionCallback<unknown>>,
+    required: false
   }
 })
 
@@ -113,7 +120,7 @@ const {
   doUpdate,
   handleSee,
   closeDialog,
-  resetAction } = useCrud(props.fieldList, rGet, rAdd, rDel, rUpdate, () => doLoad())
+  resetAction } = useCrud(props.fieldList, rGet, rAdd, rDel, rUpdate, () => doLoad(), props.beforeDoActionCallback)
 
 
 // -- 表单校验规则相关 --

@@ -195,4 +195,19 @@ declare namespace crud {
     type?: 'ASC' | 'DESC'
   }
 
+  /**
+   * 回调结果
+   */
+  type callbackRes<T> = {
+    /** 是否继续  [默认为true] */
+    continue?: boolean,
+    /** 表单数据  [将覆盖原有表单数据] */
+    formData?: T
+  }
+
+  /**
+   * 操作执行前的回调
+   */
+  type beforeDoActionCallback<T> = (action: crud.action, currentRowKey?: string, currentRow?: T, formData?: T) => Promise<callbackRes<T>>
+
 }

@@ -13,6 +13,7 @@ import 'element-plus/es/components/message-box/style/css'
  * @param rDel 删除
  * @param rUpdate 修改
  * @param doLoad 加载数据
+ * @param beforeDoActionCallback 操作执行前的回调
  */
 export default function useCrud<T>(
   fieldList: crud.field[],
@@ -20,7 +21,8 @@ export default function useCrud<T>(
   rAdd: crud.addFunc<T>,
   rDel: crud.delFunc,
   rUpdate: crud.updateFunc<T>,
-  doLoad: () => void) {
+  doLoad: () => void,
+  beforeDoActionCallback?: crud.beforeDoActionCallback<T>) {
 
   /**
    * dialog是否可见
@@ -115,6 +117,23 @@ export default function useCrud<T>(
   }
 
   /**
+   * 操作执行前的处理
+   * @param action 操作
+   */
+  const beforeDoAction = async (action: crud.action) => {
+    if (beforeDoActionCallback) {
+      const res = await beforeDoActionCallback(action, iCurrentRowKey.value, iCurrentRow.value, formData.value)
+      if (res.continue === false) {
+        return false
+      }
+      if (res.formData !== undefined) {
+        formData.value = res.formData
+      }
+    }
+    return true
+  }
+
+  /**
    * 重置状态
    * <p>如果同时有dialog开启，应该先关闭dialog，当dialog关闭结束后再调用此方法，以避免因数据改变导致的关闭时界面异常
    */
@@ -149,10 +168,15 @@ export default function useCrud<T>(
    * 执行添加
    */
   const doAdd = async () => {
-    formRef.value?.validate((isValid: boolean) => {
+    formRef.value?.validate(async (isValid: boolean) => {
       if (!isValid) {
         return
       }
+
+      if (!await beforeDoAction('add')) {
+        return
+      }
+
       rAdd(formData.value)
         .then(() => {
           ElMessage.success('操作成功')
@@ -184,7 +208,11 @@ export default function useCrud<T>(
         draggable: true
       }
     )
-      .then(() => {
+      .then(async () => {
+        if (!await beforeDoAction('del')) {
+          return
+        }
+
         rDel(iCurrentRowKey.value)
           .then(() => {
             ElMessage.success('操作成功')
@@ -218,10 +246,15 @@ export default function useCrud<T>(
    * 执行修改
    */
   const doUpdate = async () => {
-    formRef.value?.validate((isValid: boolean) => {
+    formRef.value?.validate(async (isValid: boolean) => {
       if (!isValid) {
         return
       }
+
+      if (!await beforeDoAction('update')) {
+        return
+      }
+
       rUpdate(formData.value)
         .then(() => {
           ElMessage.success('操作成功')
