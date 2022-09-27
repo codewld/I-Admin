@@ -146,13 +146,15 @@ public class BaseController<T> {
 
         // 排序
         ICollectionUtils.deNull(queryParam.getOrders()).forEach(item -> {
+            String field = item.getField();
+            field = CaseFormatUtils.camelCase2UnderScoreCase(field);
             QueryParam.Order.Type type = item.getType();
             switch (type) {
                 case ASC:
-                    queryWrapper.orderByAsc(item.getField());
+                    queryWrapper.orderByAsc(field);
                     break;
                 case DESC:
-                    queryWrapper.orderByDesc(item.getField());
+                    queryWrapper.orderByDesc(field);
                     break;
                 default:
             }
