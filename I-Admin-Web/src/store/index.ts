@@ -8,7 +8,7 @@ const store = createPinia()
 
 // 持久化插件
 store.use(createPersistedState({
-  storage: localStorage
+  storage: sessionStorage
 }))
 
 export default store
