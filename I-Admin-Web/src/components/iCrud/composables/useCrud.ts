@@ -3,6 +3,7 @@ import { ElMessage } from 'element-plus'
 import 'element-plus/es/components/message/style/css'
 import { ElMessageBox } from 'element-plus/es'
 import 'element-plus/es/components/message-box/style/css'
+import useLoading from '@/composables/useLoading'
 
 
 /**
@@ -195,6 +196,11 @@ export default function useCrud<T>(
         return
       }
 
+      const { startLoading, endLoading } = useLoading()
+      const loadingConfig = {
+        text: '添加中。。。'
+      }
+      startLoading(loadingConfig)
       rAdd(formData.value)
         .then(() => {
           ElMessage.success('操作成功')
@@ -203,6 +209,9 @@ export default function useCrud<T>(
         })
         .catch(err => {
           ElMessage.warning(err)
+        })
+        .finally(() => {
+          endLoading()
         })
     })
   }
@@ -230,6 +239,11 @@ export default function useCrud<T>(
         return
       }
 
+      const { startLoading, endLoading } = useLoading()
+      const loadingConfig = {
+        text: '删除中。。。'
+      }
+      startLoading(loadingConfig)
       rDel(iCurrentRowKey.value)
         .then(() => {
           ElMessage.success('操作成功')
@@ -238,8 +252,9 @@ export default function useCrud<T>(
           ElMessage.warning(err)
         })
         .finally(() => {
-          doLoad()
+          endLoading()
           resetAction()
+          doLoad()
         })
     } catch (e) {
       console.log(e)
@@ -276,6 +291,11 @@ export default function useCrud<T>(
         return
       }
 
+      const { startLoading, endLoading } = useLoading()
+      const loadingConfig = {
+        text: '修改中。。。'
+      }
+      startLoading(loadingConfig)
       rUpdate(formData.value)
         .then(() => {
           ElMessage.success('操作成功')
@@ -284,6 +304,9 @@ export default function useCrud<T>(
         })
         .catch(err => {
           ElMessage.warning(err)
+        })
+        .finally(() => {
+          endLoading()
         })
     })
   }
