@@ -131,8 +131,8 @@ const hasAction = computed(() => {
 
 
 // -- 表单校验规则相关 --
-const { getRules } = useRules()
-
+const {
+  getRules } = useRules()
 
 defineExpose({
   currentRow,

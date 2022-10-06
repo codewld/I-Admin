@@ -91,9 +91,6 @@ export default function useCrud<T>(
     try {
       isGettingCurrentRow.value = true
       iCurrentRow.value = await rGet(iCurrentRowKey.value)
-    } catch (e) {
-      ElMessage.warning(<string>e)
-      throw e
     } finally {
       isGettingCurrentRow.value = false
     }
@@ -107,12 +104,7 @@ export default function useCrud<T>(
    * @param currentRowKey 当前行主键值
    * @throws 有正在进行的操作
    */
-  const beforeAction = async (action: crud.action, currentRowKey?: string) => {
-    // 如果已经有正在进行的操作，则拒绝新操作
-    if (iAction.value !== undefined) {
-      throw '有正在进行的操作'
-    }
-
+  const beforeAction = (action: crud.action, currentRowKey?: string) => {
     // 记录正在进行的操作
     iAction.value = action
 
@@ -170,7 +162,12 @@ export default function useCrud<T>(
    */
   const handleAdd = async () => {
     try {
-      await beforeAction('add')
+      // 如果已经有正在进行的操作，则拒绝新操作
+      if (iAction.value !== undefined) {
+        return
+      }
+
+      beforeAction('add')
 
       formData.value = {}
       fieldList.forEach(item => {
@@ -179,7 +176,9 @@ export default function useCrud<T>(
 
       dialogVisible.value = true
     } catch (e) {
-      console.log(e)
+      ElMessage.warning(<string>e)
+      resetAction()
+      doLoad()
     }
   }
 
@@ -221,7 +220,12 @@ export default function useCrud<T>(
    */
   const handleDel = async (currentRowKey: string) => {
     try {
-      await beforeAction('del', currentRowKey)
+      // 如果已经有正在进行的操作，则拒绝新操作
+      if (iAction.value !== undefined) {
+        return
+      }
+
+      beforeAction('del', currentRowKey)
 
       await ElMessageBox.confirm(
         '是否要进行删除?',
@@ -257,7 +261,7 @@ export default function useCrud<T>(
           doLoad()
         })
     } catch (e) {
-      console.log(e)
+      ElMessage.warning(<string>e)
       resetAction()
     }
   }
@@ -267,14 +271,21 @@ export default function useCrud<T>(
    */
   const handleUpdate = async (currentRowKey: string) => {
     try {
-      await beforeAction('update', currentRowKey)
+      // 如果已经有正在进行的操作，则拒绝新操作
+      if (iAction.value !== undefined) {
+        return
+      }
+
+      beforeAction('update', currentRowKey)
 
       await getCurrentRow()
       formData.value = { ...iCurrentRow.value }
 
       dialogVisible.value = true
     } catch (e) {
-      console.log(e)
+      ElMessage.warning(<string>e)
+      resetAction()
+      doLoad()
     }
   }
 
@@ -316,14 +327,21 @@ export default function useCrud<T>(
    */
   const handleSee = async (currentRowKey: string) => {
     try {
-      await beforeAction('see', currentRowKey)
+      // 如果已经有正在进行的操作，则拒绝新操作
+      if (iAction.value !== undefined) {
+        return
+      }
+
+      beforeAction('see', currentRowKey)
 
       await getCurrentRow()
       formData.value = { ...iCurrentRow.value }
 
       dialogVisible.value = true
     } catch (e) {
-      console.log(e)
+      ElMessage.warning(<string>e)
+      resetAction()
+      doLoad()
     }
   }
 
