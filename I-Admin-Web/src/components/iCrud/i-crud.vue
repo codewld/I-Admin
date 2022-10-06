@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType } from 'vue'
+import { computed, PropType } from 'vue'
 import { Plus, Delete, Edit, View } from '@element-plus/icons-vue'
 import IContainer from '@/components/iContainer'
 import ICard from '@/components/iCard/i-card.vue'
@@ -122,6 +122,13 @@ const {
   closeDialog,
   resetAction } = useCrud(props.fieldList, rGet, rAdd, rDel, rUpdate, () => doLoad(), props.beforeDoActionCallback)
 
+/**
+ * 是否有当前正在进行的操作
+ */
+const hasAction = computed(() => {
+  return action.value !== undefined
+})
+
 
 // -- 表单校验规则相关 --
 const { getRules } = useRules()
@@ -174,7 +181,7 @@ defineExpose({
         <slot name="table-button-front" :currentRow="currentRow"/>
         <el-button
             v-if="buttonList.includes('add')"
-            :disabled="isLoading"
+            :disabled="isLoading || hasAction"
             @click="handleAdd"
             :icon="Plus"
             type="primary">
@@ -182,7 +189,7 @@ defineExpose({
         </el-button>
         <el-button
             v-if="buttonList.includes('del')"
-            :disabled="!currentRow || isLoading"
+            :disabled="!currentRow || isLoading || hasAction"
             @click="handleDel(currentRowKey)"
             :loading="action === 'del' && isGetting"
             :icon="Delete"
@@ -191,7 +198,7 @@ defineExpose({
         </el-button>
         <el-button
             v-if="buttonList.includes('update')"
-            :disabled="!currentRow || isLoading"
+            :disabled="!currentRow || isLoading || hasAction"
             @click="handleUpdate(currentRowKey)"
             :loading="action === 'update' && isGetting"
             :icon="Edit"
@@ -200,7 +207,7 @@ defineExpose({
         </el-button>
         <el-button
             v-if="buttonList.includes('see')"
-            :disabled="!currentRow || isLoading"
+            :disabled="!currentRow || isLoading || hasAction"
             @click="handleSee(currentRowKey)"
             :loading="action === 'see' && isGetting"
             :icon="View"
