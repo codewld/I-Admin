@@ -4,10 +4,12 @@ import 'element-plus/es/components/message/style/css'
 import { ElMessageBox } from 'element-plus/es'
 import 'element-plus/es/components/message-box/style/css'
 import useLoading from '@/composables/useLoading'
+import { getDiff } from '@/utils/objUtils'
 
 
 /**
  * CRUD
+ * @param keyField 主键字段
  * @param fieldList 字段列表
  * @param rGet 查询
  * @param rAdd 添加
@@ -17,6 +19,7 @@ import useLoading from '@/composables/useLoading'
  * @param beforeDoActionCallback 操作执行前的回调
  */
 export default function useCrud<T>(
+  keyField: string,
   fieldList: crud.field[],
   rGet: crud.getFunc<T>,
   rAdd: crud.addFunc<T>,
@@ -302,12 +305,17 @@ export default function useCrud<T>(
         return
       }
 
+      const diff = getDiff(formData.value, iCurrentRow.value)
+      if (diff[keyField] === undefined) {
+        diff[keyField] = iCurrentRowKey.value
+      }
+
       const { startLoading, endLoading } = useLoading()
       const loadingConfig = {
         text: '修改中。。。'
       }
       startLoading(loadingConfig)
-      rUpdate(formData.value)
+      rUpdate(<any>diff)
         .then(() => {
           ElMessage.success('操作成功')
           doLoad()

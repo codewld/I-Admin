@@ -120,7 +120,7 @@ const {
   doUpdate,
   handleSee,
   closeDialog,
-  resetAction } = useCrud(props.fieldList, rGet, rAdd, rDel, rUpdate, () => doLoad(), props.beforeDoActionCallback)
+  resetAction } = useCrud(props.keyField, props.fieldList, rGet, rAdd, rDel, rUpdate, () => doLoad(), props.beforeDoActionCallback)
 
 /**
  * 是否有当前正在进行的操作
