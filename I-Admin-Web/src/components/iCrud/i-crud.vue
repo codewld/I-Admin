@@ -134,13 +134,13 @@ defineExpose({
 </script>
 
 <template>
-  <i-container v-loading="isLoading">
+  <i-container>
     <!--搜索区-->
     <i-card v-if="hasSearch"  title="搜索区">
       <!--按钮区-->
       <template #button>
-        <el-button @click="resetSearch">重置</el-button>
-        <el-button type="primary" @click="doSearch">搜索</el-button>
+        <el-button :disabled="isLoading" @click="resetSearch">重置</el-button>
+        <el-button :disabled="isLoading" type="primary" @click="doSearch">搜索</el-button>
       </template>
 
       <!--表单区-->
@@ -174,6 +174,7 @@ defineExpose({
         <slot name="table-button-front" :currentRow="currentRow"/>
         <el-button
             v-if="buttonList.includes('add')"
+            :disabled="isLoading"
             @click="handleAdd"
             :icon="Plus"
             type="primary">
@@ -181,7 +182,7 @@ defineExpose({
         </el-button>
         <el-button
             v-if="buttonList.includes('del')"
-            :disabled="!currentRow"
+            :disabled="!currentRow || isLoading"
             @click="handleDel(currentRowKey)"
             :loading="action === 'del' && isGetting"
             :icon="Delete"
@@ -190,7 +191,7 @@ defineExpose({
         </el-button>
         <el-button
             v-if="buttonList.includes('update')"
-            :disabled="!currentRow"
+            :disabled="!currentRow || isLoading"
             @click="handleUpdate(currentRowKey)"
             :loading="action === 'update' && isGetting"
             :icon="Edit"
@@ -199,7 +200,7 @@ defineExpose({
         </el-button>
         <el-button
             v-if="buttonList.includes('see')"
-            :disabled="!currentRow"
+            :disabled="!currentRow || isLoading"
             @click="handleSee(currentRowKey)"
             :loading="action === 'see' && isGetting"
             :icon="View"
@@ -211,6 +212,7 @@ defineExpose({
 
       <!--表格区-->
       <el-table
+          v-loading="isLoading"
           :data="tableData"
           @current-change="handleCurrentRowChange"
           :row-key="keyField"
