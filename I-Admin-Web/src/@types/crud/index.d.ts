@@ -208,6 +208,6 @@ declare namespace crud {
   /**
    * 操作执行前的回调
    */
-  type beforeDoActionCallback<T> = (action: crud.action, currentRowKey?: string, currentRow?: T, formData?: T) => Promise<callbackRes<T>>
+  type beforeDoActionCallback<T> = (action: crud.action, currentRowKey?: string, currentRow?: T, formData?: T) => Promise<callbackRes<T> | void> | callbackRes<T> | void
 
 }

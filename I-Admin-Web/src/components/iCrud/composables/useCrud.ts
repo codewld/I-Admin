@@ -153,6 +153,11 @@ export default function useCrud<T>(
   const beforeDoAction = async (action: crud.action) => {
     if (beforeDoActionCallback) {
       const res = await beforeDoActionCallback(action, iCurrentRowKey.value, iCurrentRow.value, formData.value)
+      console.log(res)
+      console.log('res')
+      if (!res) {
+        return true
+      }
       if (res.continue === false) {
         return false
       }
