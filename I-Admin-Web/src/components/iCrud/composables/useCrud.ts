@@ -153,8 +153,6 @@ export default function useCrud<T>(
   const beforeDoAction = async (action: crud.action) => {
     if (beforeDoActionCallback) {
       const res = await beforeDoActionCallback(action, iCurrentRowKey.value, iCurrentRow.value, formData.value)
-      console.log(res)
-      console.log('res')
       if (!res) {
         return true
       }
@@ -329,7 +327,7 @@ export default function useCrud<T>(
           ElMessage.warning(err)
         })
         .finally(() => {
-          dialogVisible.value = false
+          dialogLoading.value = false
         })
     })
   }
