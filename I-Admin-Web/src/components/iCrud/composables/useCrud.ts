@@ -265,7 +265,9 @@ export default function useCrud<T>(
           doLoad()
         })
     } catch (e) {
-      ElMessage.warning(<string>e)
+      if (!['cancel', 'close'].includes(<string>e)) {
+        ElMessage.warning(<string>e)
+      }
       resetAction()
     }
   }

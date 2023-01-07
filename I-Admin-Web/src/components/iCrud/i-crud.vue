@@ -192,7 +192,6 @@ defineExpose({
             v-if="buttonList.includes('del')"
             :disabled="!currentRow || isLoading || hasAction"
             @click="handleDel(currentRowKey)"
-            :loading="action === 'del' && isGetting"
             :icon="Delete"
             type="danger">
           删除
