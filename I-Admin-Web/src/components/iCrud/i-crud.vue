@@ -108,6 +108,7 @@ const {
 // -- CRUD相关 --
 const {
   dialogVisible,
+  dialogLoading,
   formRef,
   formData,
   action,
@@ -266,7 +267,7 @@ defineExpose({
       :close-on-click-modal="false"
       destroy-on-close
       draggable>
-    <el-form ref="formRef" :model="formData" inline label-position="top">
+    <el-form ref="formRef" :model="formData" v-loading="dialogLoading" inline label-position="top">
       <slot name="form-item-front"/>
       <template v-for="(field, key) in fieldList" :key="key">
         <el-form-item
@@ -290,9 +291,9 @@ defineExpose({
       <slot name="form-item-rear"/>
     </el-form>
     <template #footer>
-      <el-button @click="closeDialog">关闭</el-button>
-      <el-button v-if="action === 'add'" type="primary" @click="doAdd">确认</el-button>
-      <el-button v-if="action === 'update'" type="primary" @click="doUpdate">确认</el-button>
+      <el-button :disabled="dialogLoading" @click="closeDialog">关闭</el-button>
+      <el-button v-if="action === 'add'" :loading="dialogLoading" type="primary" @click="doAdd">确认</el-button>
+      <el-button v-if="action === 'update'" :loading="dialogLoading" type="primary" @click="doUpdate">确认</el-button>
     </template>
   </el-dialog>
 </template>

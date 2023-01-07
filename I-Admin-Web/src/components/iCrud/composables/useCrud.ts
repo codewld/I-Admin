@@ -42,6 +42,11 @@ export default function useCrud<T>(
   const dialogVisible = ref(false)
 
   /**
+   * dialog是否loading
+   */
+  const dialogLoading = ref(false)
+
+  /**
    * 当前正在进行的操作
    */
   const iAction: Ref<crud.action | undefined> = ref(undefined)
@@ -198,11 +203,7 @@ export default function useCrud<T>(
         return
       }
 
-      const { startLoading, endLoading } = useLoading()
-      const loadingConfig = {
-        text: '添加中。。。'
-      }
-      startLoading(loadingConfig)
+      dialogLoading.value = true
       rAdd(formData.value)
         .then(() => {
           ElMessage.success('操作成功')
@@ -213,7 +214,7 @@ export default function useCrud<T>(
           ElMessage.warning(err)
         })
         .finally(() => {
-          endLoading()
+          dialogLoading.value = false
         })
     })
   }
@@ -310,11 +311,7 @@ export default function useCrud<T>(
         diff[keyField] = iCurrentRowKey.value
       }
 
-      const { startLoading, endLoading } = useLoading()
-      const loadingConfig = {
-        text: '修改中。。。'
-      }
-      startLoading(loadingConfig)
+      dialogLoading.value = true
       rUpdate(<any>diff)
         .then(() => {
           ElMessage.success('操作成功')
@@ -325,7 +322,7 @@ export default function useCrud<T>(
           ElMessage.warning(err)
         })
         .finally(() => {
-          endLoading()
+          dialogVisible.value = false
         })
     })
   }
@@ -355,6 +352,7 @@ export default function useCrud<T>(
 
   return {
     dialogVisible,
+    dialogLoading,
     formRef,
     formData,
     action: iAction,
