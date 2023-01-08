@@ -261,7 +261,6 @@ defineExpose({
   <!--增、改、查 对话框-->
   <el-dialog
       v-model="dialogVisible"
-      @close="closeDialog"
       @closed="resetAction"
       :title="actionDescription"
       :close-on-click-modal="false"

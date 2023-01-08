@@ -32,17 +32,26 @@ export default function useCrud<T>(
   const formRef = ref()
 
 
-  // -- 状态相关 --
+  // -- dialog相关 --
   /**
    * dialog是否可见
    */
   const dialogVisible = ref(false)
 
   /**
+   * 关闭Dialog
+   */
+  const closeDialog = () => {
+    dialogVisible.value = false
+  }
+
+  /**
    * dialog是否loading
    */
   const dialogLoading = ref(false)
 
+
+  // -- 状态相关 --
   /**
    * 当前正在进行的操作
    */
@@ -120,15 +129,8 @@ export default function useCrud<T>(
 
   // -- 后操作相关 --
   /**
-   * 关闭Dialog
-   */
-  const closeDialog = () => {
-    dialogVisible.value = false
-  }
-
-  /**
    * 重置状态
-   * <p>应该在关闭dialog后调用此方法，避免界面异常
+   * <p>应该监听dialog的关闭，在关闭后调用此方法，以避免界面异常
    */
   const resetAction = () => {
     // 重置正在进行的操作
@@ -207,8 +209,8 @@ export default function useCrud<T>(
       rAdd(formData.value)
         .then(() => {
           ElMessage.success('操作成功')
-          doLoad()
           closeDialog()
+          doLoad()
         })
         .catch(err => {
           ElMessage.warning(err)
@@ -251,8 +253,8 @@ export default function useCrud<T>(
     rDel(iCurrentRowKey.value)
       .then(() => {
         ElMessage.success('操作成功')
-        doLoad()
         closeDialog()
+        doLoad()
       })
       .catch(err => {
         ElMessage.warning(err)
@@ -307,8 +309,8 @@ export default function useCrud<T>(
       rUpdate(<any>diff)
         .then(() => {
           ElMessage.success('操作成功')
-          doLoad()
           closeDialog()
+          doLoad()
         })
         .catch(err => {
           ElMessage.warning(err)
