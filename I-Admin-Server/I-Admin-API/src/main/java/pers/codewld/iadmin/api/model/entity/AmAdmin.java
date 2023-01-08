@@ -2,6 +2,7 @@ package pers.codewld.iadmin.api.model.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -38,6 +39,7 @@ public class AmAdmin extends IUserDetails implements Serializable {
     private String username;
 
     @ApiModelProperty("密码")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @ApiModelProperty("昵称")
