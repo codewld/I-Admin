@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, PropType } from 'vue'
-import { Plus, Delete, Edit, View } from '@element-plus/icons-vue'
+import { Plus, Delete, Edit, View, WarningFilled } from '@element-plus/icons-vue'
 import IContainer from '@/components/iContainer'
 import ICard from '@/components/iCard/i-card.vue'
 import useCrudApi from '@/components/iCrud/composables/useCrudApi'
@@ -117,6 +117,7 @@ const {
   handleAdd,
   doAdd,
   handleDel,
+  doDel,
   handleUpdate,
   doUpdate,
   handleSee,
@@ -268,7 +269,7 @@ defineExpose({
       draggable>
     <el-form ref="formRef" :model="formData" v-loading="dialogLoading" inline label-position="top">
       <slot name="form-item-front"/>
-      <template v-for="(field, key) in fieldList" :key="key">
+      <template v-if="['add', 'update', 'see'].includes(action)" v-for="(field, key) in fieldList" :key="key">
         <el-form-item
             v-if="field?.formConf?.[action] ?? true"
             :prop="field.code"
@@ -287,11 +288,20 @@ defineExpose({
           </slot>
         </el-form-item>
       </template>
+      <template v-else>
+        <div class="flex items-center text-xl">
+          <el-icon class="text-red-400 mr-2">
+            <warning-filled/>
+          </el-icon>
+          是否要删除？
+        </div>
+      </template>
       <slot name="form-item-rear"/>
     </el-form>
     <template #footer>
       <el-button :disabled="dialogLoading" @click="closeDialog">关闭</el-button>
       <el-button v-if="action === 'add'" :loading="dialogLoading" type="primary" @click="doAdd">确认</el-button>
+      <el-button v-if="action === 'del'" :loading="dialogLoading" type="danger" @click="doDel">确认</el-button>
       <el-button v-if="action === 'update'" :loading="dialogLoading" type="primary" @click="doUpdate">确认</el-button>
     </template>
   </el-dialog>

@@ -1,9 +1,6 @@
 import { computed, Ref, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import 'element-plus/es/components/message/style/css'
-import { ElMessageBox } from 'element-plus/es'
-import 'element-plus/es/components/message-box/style/css'
-import useLoading from '@/composables/useLoading'
 import { getDiff } from '@/utils/objUtils'
 
 
@@ -234,45 +231,35 @@ export default function useCrud<T>(
 
       beforeAction('del', currentRowKey)
 
-      await ElMessageBox.confirm(
-        '是否要进行删除?',
-        '删除确认',
-        {
-          confirmButtonText: '删除',
-          confirmButtonClass: 'el-button--danger',
-          cancelButtonText: '取消',
-          type: 'error',
-          draggable: true
-        }
-      )
-
-      if (!await beforeDoAction('del')) {
-        return
-      }
-
-      const { startLoading, endLoading } = useLoading()
-      const loadingConfig = {
-        text: '删除中。。。'
-      }
-      startLoading(loadingConfig)
-      rDel(iCurrentRowKey.value)
-        .then(() => {
-          ElMessage.success('操作成功')
-        })
-        .catch(err => {
-          ElMessage.warning(err)
-        })
-        .finally(() => {
-          endLoading()
-          resetAction()
-          doLoad()
-        })
+      dialogVisible.value = true
     } catch (e) {
-      if (!['cancel', 'close'].includes(<string>e)) {
-        ElMessage.warning(<string>e)
-      }
+      ElMessage.warning(<string>e)
       resetAction()
+      doLoad()
     }
+  }
+
+  /**
+   * 执行删除
+   */
+  const doDel = async () => {
+    if (!await beforeDoAction('del')) {
+      return
+    }
+
+    dialogLoading.value = true
+    rDel(iCurrentRowKey.value)
+      .then(() => {
+        ElMessage.success('操作成功')
+        doLoad()
+        closeDialog()
+      })
+      .catch(err => {
+        ElMessage.warning(err)
+      })
+      .finally(() => {
+        dialogLoading.value = false
+      })
   }
 
   /**
@@ -366,6 +353,7 @@ export default function useCrud<T>(
     handleAdd,
     doAdd,
     handleDel,
+    doDel,
     handleUpdate,
     doUpdate,
     handleSee,
