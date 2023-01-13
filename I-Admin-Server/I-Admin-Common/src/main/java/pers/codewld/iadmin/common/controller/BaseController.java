@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,6 @@ import pers.codewld.iadmin.common.model.vo.PageVO;
 import pers.codewld.iadmin.common.util.CaseFormatUtils;
 import pers.codewld.iadmin.common.util.ICollectionUtils;
 
-import javax.annotation.Resource;
 import javax.validation.constraints.Min;
 import java.util.List;
 
@@ -23,7 +23,7 @@ import java.util.List;
 @Validated
 public class BaseController<T> {
 
-    @Resource
+    @Autowired
     protected IService<T> baseService;
 
     @ApiOperation("添加")
