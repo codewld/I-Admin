@@ -11,119 +11,20 @@ const requestConf: crud.requestByPath = {
 }
 
 const fieldList: crud.field[] = [
-  {
-    code: 'id',
-    name: 'id',
-    searchConf: {
-      display: false
-    },
-    tableConf: {
-      display: false
-    },
-    formConf: {
-      add: false,
-      update: false,
-      see: false
-    }
-  },
-  {
-    code: 'username',
-    name: '用户名',
-    formConf: {
-      rules: ['required']
-    }
-  },
-  {
-    code: 'password',
-    name: '密码',
-    searchConf: {
-      display: false
-    },
-    tableConf: {
-      display: false
-    },
-    formConf: {
-      rules: ['required']
-    }
-  },
-  {
-    code: 'nickName',
-    name: '昵称'
-  },
-  {
-    code: 'email',
-    name: '邮箱'
-  },
-  {
-    code: 'status',
-    name: '启用状态',
-    searchConf: {
-      operator: 'EQ'
-    },
-    formConf: {
-      rules: ['required'],
-      addDefault: 10
-    }
-  },
-  {
-    code: 'note',
-    name: '备注',
-    searchConf: {
-      display: false
-    },
-    tableConf: {
-      display: false
-    }
-  },
-  {
-    code: 'createTime',
-    name: '创建时间',
-    searchConf: {
-      display: false
-    },
-    tableConf: {
-      display: false
-    },
-    formConf: {
-      add: false,
-      update: false
-    }
-  },
-  {
-    code: 'updateTime',
-    name: '更新时间',
-    searchConf: {
-      display: false
-    },
-    tableConf: {
-      display: false
-    },
-    formConf: {
-      add: false,
-      update: false
-    }
-  },
-  {
-    code: 'lastLoginTime',
-    name: '最后登录时间',
-    searchConf: {
-      display: false
-    },
-    tableConf: {
-      display: false
-    },
-    formConf: {
-      add: false,
-      update: false
-    }
-  }
+  {code: 'id', name: 'id', searchConf: {display: false}, tableConf: {display: false}, formConf: {add: false, update: false, see: false}},
+  {code: 'username', name: '用户名', formConf: {rules: ['required']}},
+  {code: 'password', name: '密码', searchConf: {display: false}, tableConf: {display: false}, formConf: {rules: ['required']}},
+  {code: 'nickName', name: '昵称'},
+  {code: 'email', name: '邮箱'},
+  {code: 'status', name: '启用状态', searchConf: {operator: 'EQ'}, formConf: {rules: ['required'], addDefault: 10}},
+  {code: 'lastLoginTime', name: '最后登录时间', searchConf: {display: false}, tableConf: {display: false}, formConf: {add: false, update: false}},
+  {code: 'note', name: '备注', searchConf: {display: false}, tableConf: {display: false}},
+  {code: 'createTime', name: '创建时间', searchConf: {display: false}, tableConf: {display: false}, formConf: {add: false, update: false}},
+  {code: 'updateTime', name: '更新时间', searchConf: {display: false}, tableConf: {display: false}, formConf: {add: false, update: false}}
 ]
 
 const orders: crud.order[] = [
-  {
-    field: 'create_time',
-    type: 'DESC'
-  }
+  {field: 'create_time', type: 'DESC'}
 ]
 
 const beforeDoActionCallback: crud.beforeDoActionCallback<common.KVObj> = async (
