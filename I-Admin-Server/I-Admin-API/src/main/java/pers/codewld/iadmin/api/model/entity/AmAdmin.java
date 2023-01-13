@@ -52,6 +52,9 @@ public class AmAdmin extends IUserDetails implements Serializable {
     @ApiModelProperty("启用状态  [0:禁用;10:启用]")
     private Integer status;
 
+    @ApiModelProperty("最后登录时间")
+    private LocalDateTime lastLoginTime;
+
     @ApiModelProperty("备注")
     private String note;
 
@@ -62,9 +65,6 @@ public class AmAdmin extends IUserDetails implements Serializable {
     @ApiModelProperty("更新时间")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
-
-    @ApiModelProperty("最后登录时间")
-    private LocalDateTime lastLoginTime;
 
     @TableField(exist = false)
     private List<String> roleIdList;
