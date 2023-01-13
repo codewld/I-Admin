@@ -182,7 +182,7 @@ declare namespace crud {
     /** 表单校验规则 */
     rules?: rule[]
     /** 添加时默认值 */
-    addDefault?: string,
+    addDefault?: string | number,
   }
 
   /**

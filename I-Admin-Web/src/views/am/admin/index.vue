@@ -7,7 +7,7 @@ import md5 from 'md5'
 
 const requestConf: crud.requestByPath = {
   path: '/am-admin',
-  page: false
+  page: true
 }
 
 const fieldList: crud.field[] = [
@@ -61,7 +61,8 @@ const fieldList: crud.field[] = [
       operator: 'EQ'
     },
     formConf: {
-      rules: ['required']
+      rules: ['required'],
+      addDefault: 10
     }
   },
   {
