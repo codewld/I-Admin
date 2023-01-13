@@ -248,7 +248,7 @@ defineExpose({
       <!--分页区-->
       <el-pagination
           v-if="hasPagination"
-          :page-sizes="[2, 4, 8, 16]"
+          :page-sizes="[5, 10, 20]"
           :total="total"
           v-model:current-page="pageNum"
           v-model:page-size="pageSize"

@@ -33,7 +33,7 @@ export default function useTable<T>(massGetConf: crud.massGetConf<T>, queryParam
   /**
    * 每页条数
    */
-  const pageSize: Ref<number> = ref(2)
+  const pageSize: Ref<number> = ref(5)
 
   /**
    * 数据总数
