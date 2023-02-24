@@ -21,7 +21,7 @@ import java.util.List;
  * 基本增删改查 接口
  */
 @Validated
-public class BaseController<T> {
+public abstract class BaseController<T> {
 
     @Autowired
     protected IService<T> baseService;
@@ -60,7 +60,7 @@ public class BaseController<T> {
         return new PageVO<>(baseService.page(new Page<>(pageNum, pageSize), queryWrapper));
     }
 
-    @ApiOperation("批量查询")
+    @ApiOperation("列表查询")
     @PostMapping("/list")
     public List<T> list(@RequestBody(required = false) @Validated QueryParam queryParam) {
         QueryWrapper<T> queryWrapper = getQueryWrapper(queryParam);
