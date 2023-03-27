@@ -88,7 +88,7 @@ export default function useCrud<T>(
   /**
    * 表单数据
    */
-  const formData = ref()
+  const formData: Ref<common.KVObj<any>> = ref({})
 
 
   // -- 预操作相关 --
@@ -151,7 +151,7 @@ export default function useCrud<T>(
    */
   const beforeDoAction = async (action: crud.action) => {
     if (beforeDoActionCallback) {
-      const res = await beforeDoActionCallback(action, iCurrentRowKey.value, iCurrentRow.value, formData.value)
+      const res = await beforeDoActionCallback(action, iCurrentRowKey.value, iCurrentRow.value, <any>formData.value)
       if (!res) {
         return true
       }
@@ -206,7 +206,7 @@ export default function useCrud<T>(
       }
 
       dialogLoading.value = true
-      rAdd(formData.value)
+      rAdd(<any>formData.value)
         .then(() => {
           ElMessage.success('操作成功')
           closeDialog()

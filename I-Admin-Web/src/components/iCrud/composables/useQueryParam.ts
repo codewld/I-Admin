@@ -8,7 +8,7 @@ import { computed, Ref } from 'vue'
  * @param orders 排序列表
  */
 export default function useQueryParam(
-  searchFormData: Ref<common.KVObj>,
+  searchFormData: Ref<common.KVObj<any>>,
   fieldList: crud.field[],
   keyField: string,
   orders: crud.order[]) {

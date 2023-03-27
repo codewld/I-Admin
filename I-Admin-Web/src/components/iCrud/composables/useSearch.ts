@@ -11,7 +11,7 @@ export default function useSearch(fieldList: crud.field[], doLoad: () => void) {
   /**
    * 搜索表单数据
    */
-  const searchFormData: Ref<common.KVObj> = ref({})
+  const searchFormData: Ref<common.KVObj<any>> = ref({})
 
   /**
    * 重置搜索

@@ -182,7 +182,7 @@ defineExpose({
       <template #button>
         <slot name="table-button-front" :currentRow="currentRow"/>
         <el-button
-            v-if="buttonList.includes('add')"
+            v-if="buttonList?.includes('add')"
             :disabled="isLoading || hasAction"
             @click="handleAdd"
             :icon="Plus"
@@ -190,7 +190,7 @@ defineExpose({
           添加
         </el-button>
         <el-button
-            v-if="buttonList.includes('del')"
+            v-if="buttonList?.includes('del')"
             :disabled="!currentRow || isLoading || hasAction"
             @click="handleDel(currentRowKey)"
             :icon="Delete"
@@ -198,7 +198,7 @@ defineExpose({
           删除
         </el-button>
         <el-button
-            v-if="buttonList.includes('update')"
+            v-if="buttonList?.includes('update')"
             :disabled="!currentRow || isLoading || hasAction"
             @click="handleUpdate(currentRowKey)"
             :loading="action === 'update' && isGetting"
@@ -207,7 +207,7 @@ defineExpose({
           修改
         </el-button>
         <el-button
-            v-if="buttonList.includes('see')"
+            v-if="buttonList?.includes('see')"
             :disabled="!currentRow || isLoading || hasAction"
             @click="handleSee(currentRowKey)"
             :loading="action === 'see' && isGetting"
@@ -236,7 +236,7 @@ defineExpose({
               :fixed="field.tableConf?.fixed ?? undefined"
               :align="field.tableConf?.align ?? 'center'">
             <template #default="{ row }">
-              <slot :name="`table-column-${field.code}`" :row="row">
+              <slot :name="`table-column-${field.code}`" :row="<common.KVObj<any>>row">
                 {{ row[field.code] }}
               </slot>
             </template>
@@ -268,7 +268,7 @@ defineExpose({
       draggable>
     <el-form ref="formRef" :model="formData" v-loading="dialogLoading" inline label-position="top">
       <slot name="form-item-front"/>
-      <template v-if="['add', 'update', 'see'].includes(action)" v-for="(field, key) in fieldList" :key="key">
+      <template v-if="action && ['add', 'update', 'see'].includes(action)" v-for="(field, key) in fieldList" :key="key">
         <el-form-item
             v-if="field?.formConf?.[action] ?? true"
             :prop="field.code"

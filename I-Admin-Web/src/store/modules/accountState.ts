@@ -8,7 +8,7 @@ export const useAccountStore = defineStore({
   id: 'Account',
   state: (): Account.account => {
     return {
-      username: '',
+      username: undefined,
       JWT: undefined
     }
   },

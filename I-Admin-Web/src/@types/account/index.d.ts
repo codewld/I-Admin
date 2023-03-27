@@ -15,9 +15,9 @@ declare namespace Account {
    */
   interface account {
     /** 用户名 */
-    username: string,
+    username?: string,
     /** JWT */
-    JWT: string | undefined
+    JWT?: string
   }
 
 }

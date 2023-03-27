@@ -27,7 +27,7 @@ const orders: crud.order[] = [
   {field: 'create_time', type: 'DESC'}
 ]
 
-const beforeDoActionCallback: crud.beforeDoActionCallback<common.KVObj> = async (
+const beforeDoActionCallback: crud.beforeDoActionCallback<common.KVObj<any>> = async (
     action,
     currentRowKey,
     currentRow,

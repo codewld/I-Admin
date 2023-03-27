@@ -10,7 +10,7 @@ export default function useCurrentRow(keyField: string) {
   /**
    * 当前行
    */
-  const currentRow: Ref<common.KVObj> = ref({})
+  const currentRow: Ref<common.KVObj<any>> = ref({})
 
   /**
    * 当前行主键值
