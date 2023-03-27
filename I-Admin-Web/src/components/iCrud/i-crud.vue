@@ -153,7 +153,7 @@ defineExpose({
       </template>
 
       <!--表单区-->
-      <el-form :model="searchFormData" v-loading="isLoading" inline label-width="120px">
+      <el-form :model="searchFormData" v-loading="isLoading" inline label-width="120px" style="margin-bottom: -18px">
         <slot name="search-item-front"/>
         <template v-for="(field, key) in fieldList" :key="key">
           <el-form-item
