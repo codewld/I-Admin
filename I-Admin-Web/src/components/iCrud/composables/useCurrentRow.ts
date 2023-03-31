@@ -15,7 +15,7 @@ export default function useCurrentRow(keyField: string) {
   /**
    * 当前行主键值
    */
-  const currentRowKey = computed(() => {
+  const currentRowKey: Ref<string> = computed(() => {
     return currentRow.value?.[keyField]
   })
 
