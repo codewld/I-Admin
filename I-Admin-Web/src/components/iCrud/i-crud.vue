@@ -136,6 +136,7 @@ const hasAction = computed(() => {
 const {
   getRules } = useRules()
 
+
 defineExpose({
   currentRow,
   doLoad
@@ -180,7 +181,7 @@ defineExpose({
     <i-card title="数据区">
       <!--按钮区-->
       <template #button>
-        <slot name="table-button-front" :currentRow="currentRow"/>
+        <slot name="table-button-front" :currentRow="currentRow" :currentRowKey="currentRowKey" :isLoading="isLoading" :hasAction="hasAction"/>
         <el-button
             v-if="buttonList?.includes('add')"
             :disabled="isLoading || hasAction"
@@ -215,7 +216,7 @@ defineExpose({
             type="success">
           查看
         </el-button>
-        <slot name="table-button-rear" :currentRow="currentRow"/>
+        <slot name="table-button-rear" :currentRow="currentRow" :currentRowKey="currentRowKey" :isLoading="isLoading" :hasAction="hasAction"/>
       </template>
 
       <!--表格区-->
