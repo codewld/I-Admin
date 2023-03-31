@@ -50,7 +50,7 @@ declare namespace crud {
   /**
    * 删除
    */
-  type delFunc = (id: string | number) => Promise<string>
+  type delFunc = (id: string) => Promise<string>
 
   /**
    * 修改
@@ -60,7 +60,7 @@ declare namespace crud {
   /**
    * 查询
    */
-  type getFunc<T> = (id: string | number) => Promise<T>
+  type getFunc<T> = (id: string) => Promise<T>
 
   /**
    * 分页查询
