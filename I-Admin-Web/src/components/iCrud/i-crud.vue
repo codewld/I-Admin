@@ -113,7 +113,7 @@ const {
   formData,
   action,
   actionDescription,
-  isGetting,
+  isGettingCurrentRow,
   handleAdd,
   doAdd,
   handleDel,
@@ -201,7 +201,7 @@ defineExpose({
             v-if="buttonList?.includes('update')"
             :disabled="!currentRow || isLoading || hasAction"
             @click="handleUpdate(currentRowKey)"
-            :loading="action === 'update' && isGetting"
+            :loading="action === 'update' && isGettingCurrentRow"
             :icon="Edit"
             type="warning">
           修改
@@ -210,7 +210,7 @@ defineExpose({
             v-if="buttonList?.includes('see')"
             :disabled="!currentRow || isLoading || hasAction"
             @click="handleSee(currentRowKey)"
-            :loading="action === 'see' && isGetting"
+            :loading="action === 'see' && isGettingCurrentRow"
             :icon="View"
             type="success">
           查看

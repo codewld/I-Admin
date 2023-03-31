@@ -351,7 +351,7 @@ export default function useCrud<T>(
     formData,
     action: iAction,
     actionDescription,
-    isGetting: isGettingCurrentRow,
+    isGettingCurrentRow,
     handleAdd,
     doAdd,
     handleDel,
