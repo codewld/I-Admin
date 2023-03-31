@@ -122,7 +122,7 @@ const {
   doUpdate,
   handleSee,
   closeDialog,
-  resetAction } = useCrud(props.keyField, props.fieldList, rGet, rAdd, rDel, rUpdate, () => doLoad(), props.beforeDoActionCallback)
+  resetAction } = useCrud(props.keyField, props.fieldList, currentRowKey, rGet, rAdd, rDel, rUpdate, () => doLoad(), props.beforeDoActionCallback)
 
 /**
  * 是否有当前正在进行的操作
@@ -193,7 +193,7 @@ defineExpose({
         <el-button
             v-if="buttonList?.includes('del')"
             :disabled="!currentRow || isLoading || hasAction"
-            @click="handleDel(currentRowKey)"
+            @click="handleDel"
             :icon="Delete"
             type="danger">
           删除
@@ -201,7 +201,7 @@ defineExpose({
         <el-button
             v-if="buttonList?.includes('update')"
             :disabled="!currentRow || isLoading || hasAction"
-            @click="handleUpdate(currentRowKey)"
+            @click="handleUpdate"
             :loading="action === 'update' && isGettingCurrentRow"
             :icon="Edit"
             type="warning">
@@ -210,7 +210,7 @@ defineExpose({
         <el-button
             v-if="buttonList?.includes('see')"
             :disabled="!currentRow || isLoading || hasAction"
-            @click="handleSee(currentRowKey)"
+            @click="handleSee"
             :loading="action === 'see' && isGettingCurrentRow"
             :icon="View"
             type="success">

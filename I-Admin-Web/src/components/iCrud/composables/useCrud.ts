@@ -8,6 +8,7 @@ import { getDiff } from '@/utils/objUtils'
  * CRUD
  * @param keyField 主键字段
  * @param fieldList 字段列表
+ * @param currentRowKey 当前行主键值
  * @param rGet 查询
  * @param rAdd 添加
  * @param rDel 删除
@@ -18,6 +19,7 @@ import { getDiff } from '@/utils/objUtils'
 export default function useCrud<T>(
   keyField: string,
   fieldList: crud.field[],
+  currentRowKey: Ref<string>,
   rGet: crud.getFunc<T>,
   rAdd: crud.addFunc<T>,
   rDel: crud.delFunc,
@@ -76,11 +78,6 @@ export default function useCrud<T>(
 
   // -- 数据相关 --
   /**
-   * 当前行主键值
-   */
-  const iCurrentRowKey = ref()
-
-  /**
    * 当前行
    */
   const iCurrentRow = ref()
@@ -104,7 +101,7 @@ export default function useCrud<T>(
   const getCurrentRow = async () => {
     try {
       isGettingCurrentRow.value = true
-      iCurrentRow.value = await rGet(iCurrentRowKey.value)
+      iCurrentRow.value = await rGet(currentRowKey.value)
     } finally {
       isGettingCurrentRow.value = false
     }
@@ -115,15 +112,11 @@ export default function useCrud<T>(
    * <p>1. 记录正在进行的操作
    * <p>2. 记录当前行主键值
    * @param action 操作
-   * @param currentRowKey 当前行主键值
    * @throws 有正在进行的操作
    */
-  const beforeAction = (action: crud.action, currentRowKey?: string) => {
+  const beforeAction = (action: crud.action) => {
     // 记录正在进行的操作
     iAction.value = action
-
-    // 记录当前行主键值
-    iCurrentRowKey.value = currentRowKey
   }
 
 
@@ -135,9 +128,6 @@ export default function useCrud<T>(
   const resetAction = () => {
     // 重置正在进行的操作
     iAction.value = undefined
-
-    // 重置当前行主键值
-    iCurrentRowKey.value = undefined
 
     // 重置当前行
     iCurrentRow.value = undefined
@@ -151,7 +141,7 @@ export default function useCrud<T>(
    */
   const beforeDoAction = async (action: crud.action) => {
     if (beforeDoActionCallback) {
-      const res = await beforeDoActionCallback(action, iCurrentRowKey.value, iCurrentRow.value, <any>formData.value)
+      const res = await beforeDoActionCallback(action, currentRowKey.value, iCurrentRow.value, <any>formData.value)
       if (!res) {
         return true
       }
@@ -224,14 +214,14 @@ export default function useCrud<T>(
   /**
    * 准备删除
    */
-  const handleDel = async (currentRowKey: string) => {
+  const handleDel = async () => {
     try {
       // 如果已经有正在进行的操作，则拒绝新操作
       if (iAction.value !== undefined) {
         return
       }
 
-      beforeAction('del', currentRowKey)
+      beforeAction('del')
 
       dialogVisible.value = true
     } catch (e) {
@@ -250,7 +240,7 @@ export default function useCrud<T>(
     }
 
     dialogLoading.value = true
-    rDel(iCurrentRowKey.value)
+    rDel(currentRowKey.value)
       .then(() => {
         ElMessage.success('操作成功')
         closeDialog()
@@ -267,14 +257,14 @@ export default function useCrud<T>(
   /**
    * 准备修改
    */
-  const handleUpdate = async (currentRowKey: string) => {
+  const handleUpdate = async () => {
     try {
       // 如果已经有正在进行的操作，则拒绝新操作
       if (iAction.value !== undefined) {
         return
       }
 
-      beforeAction('update', currentRowKey)
+      beforeAction('update')
 
       await getCurrentRow()
       formData.value = { ...iCurrentRow.value }
@@ -302,7 +292,7 @@ export default function useCrud<T>(
 
       const diff = getDiff(formData.value, iCurrentRow.value)
       if (diff[keyField] === undefined) {
-        diff[keyField] = iCurrentRowKey.value
+        diff[keyField] = currentRowKey.value
       }
 
       dialogLoading.value = true
@@ -324,14 +314,14 @@ export default function useCrud<T>(
   /**
    * 准备查看
    */
-  const handleSee = async (currentRowKey: string) => {
+  const handleSee = async () => {
     try {
       // 如果已经有正在进行的操作，则拒绝新操作
       if (iAction.value !== undefined) {
         return
       }
 
-      beforeAction('see', currentRowKey)
+      beforeAction('see')
 
       await getCurrentRow()
       formData.value = { ...iCurrentRow.value }
