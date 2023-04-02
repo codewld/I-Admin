@@ -10,3 +10,13 @@ export function getDiff(newObj: common.KVObj<any>, oldObj: common.KVObj<any>): c
   }
   return diff
 }
+
+/**
+ * 判断对象是否为空
+ */
+export function isEmpty(obj?: any) {
+  if (!obj) {
+    return true
+  }
+  return Object.keys(obj).length === 0
+}
