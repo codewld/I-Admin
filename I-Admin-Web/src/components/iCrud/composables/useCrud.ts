@@ -1,7 +1,7 @@
 import { computed, Ref, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import 'element-plus/es/components/message/style/css'
-import { getDiff } from '@/utils/objUtils'
+import { getDiff, isEmpty } from '@/utils/objUtils'
 
 
 /**
@@ -291,6 +291,10 @@ export default function useCrud<T>(
       }
 
       const diff = getDiff(formData.value, iCurrentRow.value)
+      if (isEmpty(diff)) {
+        ElMessage.warning('请修改')
+        return
+      }
       if (diff[keyField] === undefined) {
         diff[keyField] = currentRowKey.value
       }
