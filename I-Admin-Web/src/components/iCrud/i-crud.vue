@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, PropType } from 'vue'
+import { PropType } from 'vue'
 import { Plus, Delete, Edit, View, WarningFilled } from '@element-plus/icons-vue'
 import IContainer from '@/components/iContainer'
 import ICard from '@/components/iCard/i-card.vue'
@@ -68,10 +68,6 @@ const props = defineProps({
 
 // -- api 相关 --
 const {
-  rAdd,
-  rDel,
-  rUpdate,
-  rGet,
   massGetConf } = useCrudApi<unknown>(props.requestConf)
 
 
@@ -107,29 +103,24 @@ const {
 
 // -- CRUD相关 --
 const {
-  dialogVisible,
-  dialogLoading,
   formRef,
-  formData,
+  dialogVisible,
+  closeDialog,
+  afterDialogClosed,
+  dialogLoading,
   action,
   actionDescription,
+  hasAction,
+  formData,
   isGettingCurrentRow,
-  handleAdd,
-  doAdd,
-  handleDel,
-  doDel,
-  handleUpdate,
-  doUpdate,
-  handleSee,
-  closeDialog,
-  resetAction } = useCrud(props.keyField, props.fieldList, currentRowKey, rGet, rAdd, rDel, rUpdate, () => doLoad(), props.beforeDoActionCallback)
-
-/**
- * 是否有当前正在进行的操作
- */
-const hasAction = computed(() => {
-  return action.value !== undefined
-})
+  handleAction,
+  doAction } = useCrud(props.keyField,
+    props.fieldList,
+    props.requestConf,
+    currentRowKey,
+    () => {},
+    () => doLoad(),
+    props.beforeDoActionCallback)
 
 
 // -- 表单校验规则相关 --
@@ -185,7 +176,7 @@ defineExpose({
         <el-button
             v-if="buttonList?.includes('add')"
             :disabled="isLoading || hasAction"
-            @click="handleAdd"
+            @click="handleAction('add')"
             :icon="Plus"
             type="primary">
           添加
@@ -193,7 +184,7 @@ defineExpose({
         <el-button
             v-if="buttonList?.includes('del')"
             :disabled="!currentRow || isLoading || hasAction"
-            @click="handleDel"
+            @click="handleAction('del')"
             :icon="Delete"
             type="danger">
           删除
@@ -201,7 +192,7 @@ defineExpose({
         <el-button
             v-if="buttonList?.includes('update')"
             :disabled="!currentRow || isLoading || hasAction"
-            @click="handleUpdate"
+            @click="handleAction('update')"
             :loading="action === 'update' && isGettingCurrentRow"
             :icon="Edit"
             type="warning">
@@ -210,7 +201,7 @@ defineExpose({
         <el-button
             v-if="buttonList?.includes('see')"
             :disabled="!currentRow || isLoading || hasAction"
-            @click="handleSee"
+            @click="handleAction('see')"
             :loading="action === 'see' && isGettingCurrentRow"
             :icon="View"
             type="success">
@@ -262,7 +253,7 @@ defineExpose({
   <!--增、改、查 对话框-->
   <el-dialog
       v-model="dialogVisible"
-      @closed="resetAction"
+      @closed="afterDialogClosed"
       :title="actionDescription"
       :close-on-click-modal="false"
       destroy-on-close
@@ -300,9 +291,7 @@ defineExpose({
     </el-form>
     <template #footer>
       <el-button :disabled="dialogLoading" @click="closeDialog">关闭</el-button>
-      <el-button v-if="action === 'add'" :loading="dialogLoading" type="primary" @click="doAdd">确认</el-button>
-      <el-button v-if="action === 'del'" :loading="dialogLoading" type="danger" @click="doDel">确认</el-button>
-      <el-button v-if="action === 'update'" :loading="dialogLoading" type="primary" @click="doUpdate">确认</el-button>
+      <el-button :loading="dialogLoading" type="primary" @click="doAction">确认</el-button>
     </template>
   </el-dialog>
 </template>
