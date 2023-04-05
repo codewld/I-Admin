@@ -1,9 +1,8 @@
-import { Ref, ref } from 'vue'
+import { computed, Ref, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import 'element-plus/es/components/message/style/css'
 import { getDiff, isEmpty } from '@/utils/objUtils'
 import useCrudApi from '@/components/iCrud/composables/useCrudApi'
-import useCrudAction from '@/components/iCrud/composables/useCrudAction'
 
 
 /**
@@ -14,6 +13,7 @@ import useCrudAction from '@/components/iCrud/composables/useCrudAction'
  * @param currentRowKey 当前行主键值
  * @param beforeAction 操作前处理
  * @param afterAction 操作后处理
+ * @param afterActionSuccess 操作成功后处理
  * @param beforeDoActionCallback 操作执行前的回调
  */
 export default function useCrud<T>(
@@ -23,6 +23,7 @@ export default function useCrud<T>(
   currentRowKey: Ref<string>,
   beforeAction: (action: crud.action) => void,
   afterAction: (action: crud.action) => void,
+  afterActionSuccess: (action: crud.action) => void,
   beforeDoActionCallback?: crud.beforeDoActionCallback<T>) {
 
   // -- api 相关 --
@@ -46,6 +47,18 @@ export default function useCrud<T>(
    */
   const dialogVisible = ref(false)
 
+  watch(dialogVisible, (dialogVisible, preDialogVisible) => {
+    if (!dialogVisible) {
+      // 确保dialog已经关闭，以避免界面异常
+      setTimeout(() => {
+        resetAction()
+
+        // 调用传入的操作后处理
+        afterAction(<crud.action>action.value)
+      }, 300)
+    }
+  })
+
   /**
    * 关闭Dialog
    */
@@ -54,25 +67,58 @@ export default function useCrud<T>(
   }
 
   /**
-   *
-   * <p>应该监听dialog的closed事件并调用此方法，以避免界面异常
-   */
-  const afterDialogClosed = () => {
-    resetAction()
-  }
-
-  /**
    * dialog是否loading
    */
   const dialogLoading = ref(false)
 
 
-  // -- 状态相关 --
-  const {
-    action ,
-    actionDescription,
-    hasAction
-  } = useCrudAction()
+  // -- 操作相关 --
+  /**
+   * 当前正在进行的操作
+   */
+  const action: Ref<crud.action | undefined> = ref(undefined)
+
+  /**
+   * 正在进行的操作描述
+   */
+  const actionDescription = computed(() => {
+    let description
+    switch (action.value) {
+      case 'add':
+        description = '添加'
+        break
+      case 'del':
+        description = '删除'
+        break
+      case 'update':
+        description = '修改'
+        break
+      case 'see':
+        description = '查看'
+        break
+      default:
+        description = ''
+    }
+    return description
+  })
+
+  /**
+   * 是否有当前正在进行的操作
+   */
+  const hasAction = computed(() => {
+    return action.value !== undefined
+  })
+
+  /**
+   * 重置操作
+   */
+  const resetAction = () => {
+    // 重置正在进行的操作
+    action.value = undefined
+
+    // 重置当前行
+    iCurrentRow.value = undefined
+  }
 
 
   // -- 数据相关 --
@@ -85,39 +131,6 @@ export default function useCrud<T>(
    * 表单数据
    */
   const formData: Ref<common.KVObj<any>> = ref({})
-
-
-  // -- 预操作相关 --
-  /**
-   * 是否正在查询完整行数据
-   */
-  const isGettingCurrentRow = ref(false)
-
-  /**
-   * 查询完整行数据
-   * @throws 请求异常
-   */
-  const getCurrentRow = async () => {
-    try {
-      isGettingCurrentRow.value = true
-      iCurrentRow.value = await rGet(currentRowKey.value)
-    } finally {
-      isGettingCurrentRow.value = false
-    }
-  }
-
-
-  // -- 后操作相关 --
-  /**
-   * 重置状态
-   */
-  const resetAction = () => {
-    // 重置正在进行的操作
-    action.value = undefined
-
-    // 重置当前行
-    iCurrentRow.value = undefined
-  }
 
 
   // -- 回调相关 --
@@ -157,20 +170,20 @@ export default function useCrud<T>(
       action.value = iAction
 
       // 调用传入的操作前处理
-      beforeAction(iAction)
+      beforeAction(action.value)
 
-      if (iAction === 'add') {
+      if (action.value === 'add') {
         formData.value = {}
         fieldList.forEach(item => {
           formData.value[item.code] = item.formConf?.addDefault
         })
-      } else if (iAction === 'del') {
+      } else if (action.value === 'del') {
 
-      } else if (iAction === 'update') {
-        await getCurrentRow()
+      } else if (action.value === 'update') {
+        iCurrentRow.value = await rGet(currentRowKey.value)
         formData.value = { ...iCurrentRow.value }
       } else {
-        await getCurrentRow()
+        iCurrentRow.value = await rGet(currentRowKey.value)
         formData.value = { ...iCurrentRow.value }
       }
 
@@ -217,12 +230,13 @@ export default function useCrud<T>(
       }
 
       dialogLoading.value = true
+
       actionPromise
         .then(() => {
           ElMessage.success('操作成功')
 
-          // 调用传入的操作后处理
-          afterAction(<crud.action>action.value)
+          // 调用传入的操作成功后处理
+          afterActionSuccess(<crud.action>action.value)
 
           closeDialog()
         })
@@ -239,13 +253,11 @@ export default function useCrud<T>(
     formRef,
     dialogVisible,
     closeDialog,
-    afterDialogClosed,
     dialogLoading,
     action,
     actionDescription,
     hasAction,
     formData,
-    isGettingCurrentRow,
     handleAction,
     doAction
   }

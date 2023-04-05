@@ -66,6 +66,14 @@ const props = defineProps({
 })
 
 
+// -- emits --
+const emits = defineEmits<{
+  (e: 'beforeAction', action: crud.action): void
+  (e: 'afterAction', action: crud.action): void
+  (e: 'afterActionSuccess', action: crud.action): void
+}>()
+
+
 // -- api 相关 --
 const {
   massGetConf } = useCrudApi<unknown>(props.requestConf)
@@ -106,20 +114,26 @@ const {
   formRef,
   dialogVisible,
   closeDialog,
-  afterDialogClosed,
   dialogLoading,
   action,
   actionDescription,
   hasAction,
   formData,
-  isGettingCurrentRow,
   handleAction,
   doAction } = useCrud(props.keyField,
     props.fieldList,
     props.requestConf,
     currentRowKey,
-    () => {},
-    () => doLoad(),
+    (action) => {
+      emits('beforeAction', action)
+    },
+    (action) => {
+      emits('afterAction', action)
+    },
+    (action) => {
+      emits('afterActionSuccess', action)
+      doLoad()
+    },
     props.beforeDoActionCallback)
 
 
@@ -130,7 +144,8 @@ const {
 
 defineExpose({
   currentRow,
-  doLoad
+  doLoad,
+  handleAction
 })
 </script>
 
@@ -172,11 +187,17 @@ defineExpose({
     <i-card title="数据区">
       <!--按钮区-->
       <template #button>
-        <slot name="table-button-front" :currentRow="currentRow" :currentRowKey="currentRowKey" :isLoading="isLoading" :hasAction="hasAction"/>
+        <slot name="table-button-front"
+              :currentRow="currentRow"
+              :currentRowKey="currentRowKey"
+              :isLoading="isLoading"
+              :action="action"
+              :hasAction="hasAction"/>
         <el-button
             v-if="buttonList?.includes('add')"
             :disabled="isLoading || hasAction"
             @click="handleAction('add')"
+            :loading="action === 'add'"
             :icon="Plus"
             type="primary">
           添加
@@ -185,6 +206,7 @@ defineExpose({
             v-if="buttonList?.includes('del')"
             :disabled="!currentRow || isLoading || hasAction"
             @click="handleAction('del')"
+            :loading="action === 'del'"
             :icon="Delete"
             type="danger">
           删除
@@ -193,7 +215,7 @@ defineExpose({
             v-if="buttonList?.includes('update')"
             :disabled="!currentRow || isLoading || hasAction"
             @click="handleAction('update')"
-            :loading="action === 'update' && isGettingCurrentRow"
+            :loading="action === 'update'"
             :icon="Edit"
             type="warning">
           修改
@@ -202,12 +224,16 @@ defineExpose({
             v-if="buttonList?.includes('see')"
             :disabled="!currentRow || isLoading || hasAction"
             @click="handleAction('see')"
-            :loading="action === 'see' && isGettingCurrentRow"
+            :loading="action === 'see'"
             :icon="View"
             type="success">
           查看
         </el-button>
-        <slot name="table-button-rear" :currentRow="currentRow" :currentRowKey="currentRowKey" :isLoading="isLoading" :hasAction="hasAction"/>
+        <slot name="table-button-rear" :currentRow="currentRow"
+              :currentRowKey="currentRowKey"
+              :isLoading="isLoading"
+              :action="action"
+              :hasAction="hasAction"/>
       </template>
 
       <!--表格区-->
@@ -253,41 +279,42 @@ defineExpose({
   <!--增、改、查 对话框-->
   <el-dialog
       v-model="dialogVisible"
-      @closed="afterDialogClosed"
       :title="actionDescription"
       :close-on-click-modal="false"
       destroy-on-close
       draggable>
     <el-form ref="formRef" :model="formData" v-loading="dialogLoading" inline label-position="top">
-      <slot name="form-item-front"/>
-      <template v-if="action && ['add', 'update', 'see'].includes(action)" v-for="(field, key) in fieldList" :key="key">
-        <el-form-item
-            v-if="field?.formConf?.[action] ?? true"
-            :prop="field.code"
-            :label="`${field.name}：`"
-            :rules="getRules(field)"
-            style="width: calc(50% - 32px)">
-          <slot
-              :name="`form-item-${field.code}`"
-              :row="formData"
-              :disabled="action === 'see'"
-              :placeholder="action === 'see' ? '' : `请输入${field.name}`">
-            <el-input
-                v-model.trim="formData[field.code]"
+      <slot name="form" :formData="formData" :action="action">
+        <slot name="form-item-front"/>
+        <template v-if="action && ['add', 'update', 'see'].includes(action)" v-for="(field, key) in fieldList" :key="key">
+          <el-form-item
+              v-if="field?.formConf?.[action] ?? true"
+              :prop="field.code"
+              :label="`${field.name}：`"
+              :rules="getRules(field)"
+              style="width: calc(50% - 32px)">
+            <slot
+                :name="`form-item-${field.code}`"
+                :row="formData"
                 :disabled="action === 'see'"
-                :placeholder="action === 'see' ? '' : `请输入${field.name}`"/>
-          </slot>
-        </el-form-item>
-      </template>
-      <template v-else>
-        <div class="flex items-center text-xl">
-          <el-icon class="text-red-400 mr-2">
-            <warning-filled/>
-          </el-icon>
-          是否要删除？
-        </div>
-      </template>
-      <slot name="form-item-rear"/>
+                :placeholder="action === 'see' ? '' : `请输入${field.name}`">
+              <el-input
+                  v-model.trim="formData[field.code]"
+                  :disabled="action === 'see'"
+                  :placeholder="action === 'see' ? '' : `请输入${field.name}`"/>
+            </slot>
+          </el-form-item>
+        </template>
+        <template v-else>
+          <div class="flex items-center text-xl">
+            <el-icon class="text-red-400 mr-2">
+              <warning-filled/>
+            </el-icon>
+            是否要删除？
+          </div>
+        </template>
+        <slot name="form-item-rear"/>
+      </slot>
     </el-form>
     <template #footer>
       <el-button :disabled="dialogLoading" @click="closeDialog">关闭</el-button>
