@@ -291,7 +291,7 @@ defineExpose({
     </el-form>
     <template #footer>
       <el-button :disabled="dialogLoading" @click="closeDialog">关闭</el-button>
-      <el-button :loading="dialogLoading" type="primary" @click="doAction">确认</el-button>
+      <el-button v-if="action && ['add', 'del', 'update'].includes(action)" :loading="dialogLoading" type="primary" @click="doAction">确认</el-button>
     </template>
   </el-dialog>
 </template>
