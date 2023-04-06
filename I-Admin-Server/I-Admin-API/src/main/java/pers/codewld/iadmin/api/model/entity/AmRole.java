@@ -28,11 +28,11 @@ public class AmRole implements Serializable {
     private String id;
 
     @ApiModelProperty("编码")
-    @Size(min = 5, max = 20, message = "编码长度应在3-20之间")
+    @Size(min = 3, max = 20, message = "编码长度应在3-20之间")
     private String code;
 
     @ApiModelProperty("名称")
-    @Size(min = 5, max = 20, message = "名称长度应在3-20之间")
+    @Size(min = 3, max = 20, message = "名称长度应在3-20之间")
     private String name;
 
     @ApiModelProperty("备注")
