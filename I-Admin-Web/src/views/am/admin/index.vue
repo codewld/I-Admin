@@ -17,7 +17,7 @@ const requestConf: crud.requestByPath = {
 const fieldList: crud.field[] = [
   {code: 'id', name: 'id', searchConf: {display: false}, tableConf: {display: false}, formConf: {add: false, update: false, see: false}},
   {code: 'username', name: '用户名', formConf: {rules: ['required']}},
-  {code: 'password', name: '密码', searchConf: {display: false}, tableConf: {display: false}, formConf: {update: false, see: false}},
+  {code: 'password', name: '密码', searchConf: {display: false}, tableConf: {display: false}, formConf: {rules: ['required'], update: false, see: false}},
   {code: 'nickName', name: '昵称'},
   {code: 'email', name: '邮箱'},
   {code: 'status', name: '启用状态', searchConf: {operator: 'EQ'}, formConf: {rules: ['required'], addDefault: 10}},
