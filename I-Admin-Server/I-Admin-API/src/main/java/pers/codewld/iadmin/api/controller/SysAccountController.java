@@ -7,24 +7,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pers.codewld.iadmin.api.model.param.LoginParam;
-import pers.codewld.iadmin.api.service.AccountService;
+import pers.codewld.iadmin.api.service.SysAccountService;
 
 import javax.annotation.Resource;
 
 /**
- * 账户 接口
+ * 系统-账户 接口
  */
 @RestController
 @RequestMapping("/account")
-public class AccountController {
+public class SysAccountController {
 
     @Resource
-    AccountService accountService;
+    SysAccountService sysAccountService;
 
     @ApiOperation("登录")
     @PostMapping("/login")
     public String login(@RequestBody @Validated LoginParam loginParam) {
-        return accountService.login(loginParam);
+        return sysAccountService.login(loginParam);
     }
 
 }

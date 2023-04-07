@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pers.codewld.iadmin.api.model.entity.AmAdmin;
 import pers.codewld.iadmin.api.model.param.LoginParam;
-import pers.codewld.iadmin.api.service.AccountService;
+import pers.codewld.iadmin.api.service.SysAccountService;
 import pers.codewld.iadmin.api.service.AmAdminService;
 import pers.codewld.iadmin.common.exception.CustomException;
 import pers.codewld.iadmin.common.model.enums.ResultCode;
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
  * 账户 Service实现类
  */
 @Service
-public class AccountServiceImpl implements AccountService {
+public class SysAccountServiceImpl implements SysAccountService {
 
     @Resource
     AmAdminService amAdminService;
