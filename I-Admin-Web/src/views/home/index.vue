@@ -1,7 +1,7 @@
 <!--首页-->
 <script setup lang="ts">
 import { ref } from 'vue'
-import { rHello } from '@/api/hello'
+import { rHello } from '@/api/sys/hello'
 import { ElMessage } from 'element-plus'
 import 'element-plus/es/components/message/style/css'
 

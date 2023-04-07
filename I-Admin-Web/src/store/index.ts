@@ -1,7 +1,7 @@
 import { createPinia } from 'pinia'
 import { createPersistedState } from 'pinia-plugin-persistedstate'
-import { useAccountStore } from './modules/accountState'
-import { useLayoutStore } from './modules/layoutState'
+import { useAccountStore } from './modules/sys/accountState'
+import { useLayoutStore } from './modules/sys/layoutState'
 
 
 const store = createPinia()

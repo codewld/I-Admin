@@ -5,7 +5,7 @@ import { ElMessage } from 'element-plus'
 import 'element-plus/es/components/message/style/css'
 import { useRouter } from 'vue-router'
 import { useAccountStore } from '@/store'
-import { rLogin } from '@/api/account'
+import { rLogin } from '@/api/sys/account'
 
 
 // -- 路由相关 --
