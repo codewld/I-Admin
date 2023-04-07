@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pers.codewld.iadmin.api.model.param.LoginParam;
+import pers.codewld.iadmin.api.model.param.SysLoginParam;
 import pers.codewld.iadmin.api.service.SysAccountService;
 
 import javax.annotation.Resource;
@@ -23,8 +23,8 @@ public class SysAccountController {
 
     @ApiOperation("登录")
     @PostMapping("/login")
-    public String login(@RequestBody @Validated LoginParam loginParam) {
-        return sysAccountService.login(loginParam);
+    public String login(@RequestBody @Validated SysLoginParam sysLoginParam) {
+        return sysAccountService.login(sysLoginParam);
     }
 
 }

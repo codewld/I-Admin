@@ -3,7 +3,7 @@ package pers.codewld.iadmin.api.service.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pers.codewld.iadmin.api.model.entity.AmAdmin;
-import pers.codewld.iadmin.api.model.param.LoginParam;
+import pers.codewld.iadmin.api.model.param.SysLoginParam;
 import pers.codewld.iadmin.api.service.SysAccountService;
 import pers.codewld.iadmin.api.service.AmAdminService;
 import pers.codewld.iadmin.common.exception.CustomException;
@@ -25,15 +25,15 @@ public class SysAccountServiceImpl implements SysAccountService {
 
     @Transactional
     @Override
-    public String login(LoginParam loginParam) {
+    public String login(SysLoginParam sysLoginParam) {
         // 查询信息
         AmAdmin loadedAmAdmin = amAdminService
                 .lambdaQuery()
                 .select(AmAdmin::getId, AmAdmin::getUsername, AmAdmin::getPassword)
-                .eq(AmAdmin::getUsername, loginParam.getUsername())
+                .eq(AmAdmin::getUsername, sysLoginParam.getUsername())
                 .one();
         // 校验账号密码
-        if (loadedAmAdmin == null || !MD5Utils.matches(loginParam.getPassword(), loadedAmAdmin.getPassword())) {
+        if (loadedAmAdmin == null || !MD5Utils.matches(sysLoginParam.getPassword(), loadedAmAdmin.getPassword())) {
             throw new CustomException(ResultCode.FORBIDDEN, "账号密码错误");
         }
         // 保存登录记录

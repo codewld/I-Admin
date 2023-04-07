@@ -10,13 +10,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * 登录参数 参数类
+ * 系统-登录参数 参数类
  */
-@ApiModel("查询参数 参数类")
+@ApiModel("系统-查询参数 参数类")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginParam {
+public class SysLoginParam {
 
     @ApiModelProperty("用户名")
     @NotBlank(message = "用户名不能为空")
