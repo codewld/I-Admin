@@ -1,7 +1,7 @@
 <!--权限-后台用户管理-->
 <script setup lang="ts">
 import ICrud from '@/components/iCrud/i-crud.vue'
-import IStatus from '@/components/iStatus'
+import IStatus from '@/components/iStatus/i-status.vue'
 import { EditPen } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import 'element-plus/es/components/message/style/css'

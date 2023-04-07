@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PropType } from 'vue'
 import { Plus, Delete, Edit, View, WarningFilled } from '@element-plus/icons-vue'
-import IContainer from '@/components/iContainer'
+import IContainer from '@/components/iContainer/i-container'
 import ICard from '@/components/iCard/i-card.vue'
 import useCrudApi from '@/components/iCrud/composables/useCrudApi'
 import useCurrentRow from '@/components/iCrud/composables/useCurrentRow'
