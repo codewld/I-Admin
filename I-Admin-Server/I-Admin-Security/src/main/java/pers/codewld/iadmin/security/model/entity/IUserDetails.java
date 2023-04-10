@@ -6,11 +6,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * 用户信息 实体类
- * <p>在UserDetails之上增加了id、roleIDList
+ * <p>在UserDetails之上增加了id、role
  * <p>用户实体类应该继承此类
  */
 @Getter
@@ -23,7 +22,7 @@ public class IUserDetails implements UserDetails {
 
     private String password;
 
-    private List<String> roleIdList;
+    private String role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

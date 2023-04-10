@@ -10,7 +10,6 @@ import pers.codewld.iadmin.common.util.ContextUtils;
 import pers.codewld.iadmin.security.model.entity.IUserDetails;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * JWT 工具类
@@ -41,7 +40,7 @@ public class JWTUtils {
                 .create()
                 .withAudience(iUserDetails.getId())
                 .withClaim("username", iUserDetails.getUsername())
-                .withClaim("roleIdList", iUserDetails.getRoleIdList())
+                .withClaim("role", iUserDetails.getRole())
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + expiration * 1000))
                 .sign(algorithm);
@@ -57,12 +56,12 @@ public class JWTUtils {
             // 提取信息
             String id = decodedJWT.getAudience().get(0);
             String username = decodedJWT.getClaim("username").asString();
-            List<String> roleIdList = decodedJWT.getClaim("roles").asList(String.class);
+            String role = decodedJWT.getClaim("role").asString();
             // 重新组合为对象
             IUserDetails iUserDetails = new IUserDetails();
             iUserDetails.setId(id);
             iUserDetails.setUsername(username);
-            iUserDetails.setRoleIdList(roleIdList);
+            iUserDetails.setRole(role);
             return iUserDetails;
         } catch (Exception e) {
             throw new CustomException(ResultCode.INVALID_CREDENTIAL, e.getMessage());

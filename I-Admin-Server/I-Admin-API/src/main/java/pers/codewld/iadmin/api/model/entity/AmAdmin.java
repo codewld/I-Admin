@@ -14,7 +14,6 @@ import pers.codewld.iadmin.security.model.entity.IUserDetails;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * 权限-后台用户 实体类
@@ -42,6 +41,9 @@ public class AmAdmin extends IUserDetails implements Serializable {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @ApiModelProperty("角色")
+    private String role;
+
     @ApiModelProperty("昵称")
     @Size(min = 5, max = 20, message = "昵称长度应在5-20之间")
     private String nickName;
@@ -65,7 +67,4 @@ public class AmAdmin extends IUserDetails implements Serializable {
     @ApiModelProperty("更新时间")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
-
-    @TableField(exist = false)
-    private List<String> roleIdList;
 }

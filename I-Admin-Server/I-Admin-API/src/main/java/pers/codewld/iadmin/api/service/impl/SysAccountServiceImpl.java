@@ -29,7 +29,7 @@ public class SysAccountServiceImpl implements SysAccountService {
         // 查询信息
         AmAdmin loadedAmAdmin = amAdminService
                 .lambdaQuery()
-                .select(AmAdmin::getId, AmAdmin::getUsername, AmAdmin::getPassword)
+                .select(AmAdmin::getId, AmAdmin::getUsername, AmAdmin::getPassword, AmAdmin::getRole)
                 .eq(AmAdmin::getUsername, sysLoginParam.getUsername())
                 .one();
         // 校验账号密码
