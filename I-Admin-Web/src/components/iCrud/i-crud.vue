@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType } from 'vue'
+import { computed, PropType } from 'vue'
 import { Plus, Delete, Edit, View, WarningFilled } from '@element-plus/icons-vue'
 import IContainer from '@/components/iContainer/i-container'
 import ICard from '@/components/iCard/i-card.vue'
@@ -142,6 +142,19 @@ const {
   getRules } = useRules()
 
 
+// -- 界面相关 --
+/**
+ * 搜索区表单项标签宽度
+ */
+const searchFormItemLabelWidth = computed(() => {
+  const fieldNameLengthList = props.fieldList
+    ?.filter(i => i.searchConf === undefined || i.searchConf.display === undefined || i.searchConf.display)
+    .map(i => i.name?.length ?? 0)
+  const maxFieldNameLength = fieldNameLengthList.length == 0 ? 0 : Math.max(...fieldNameLengthList)
+  return `${(maxFieldNameLength + 1) * 14 + 12}px`
+})
+
+
 defineExpose({
   currentRow,
   doLoad,
@@ -160,7 +173,7 @@ defineExpose({
       </template>
 
       <!--表单区-->
-      <el-form :model="searchFormData" v-loading="isLoading" inline label-width="120px" style="margin-bottom: -18px">
+      <el-form :model="searchFormData" v-loading="isLoading" inline :label-width="searchFormItemLabelWidth" style="margin-bottom: -18px">
         <slot name="search-item-front"/>
         <template v-for="(field, key) in fieldList" :key="key">
           <el-form-item
