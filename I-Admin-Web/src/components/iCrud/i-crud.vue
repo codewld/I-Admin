@@ -166,8 +166,7 @@ defineExpose({
           <el-form-item
               v-if="field?.searchConf?.display ?? true"
               :label="`${field.name}：`"
-              class="overflow-hidden"
-              style="width: calc(33.3% - 32px)">
+              class="overflow-hidden w-full md:w-1/2D32 xl:w-1/3D32">
             <slot
                 :name="`search-item-${field.code}`"
                 :row="searchFormData"
