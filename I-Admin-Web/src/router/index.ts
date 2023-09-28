@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory} from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import { useAccountStore } from '@/store'
 import useAccount from '@/composables/useAccount'
 import { ElMessage } from 'element-plus/es'

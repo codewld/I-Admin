@@ -6,7 +6,7 @@ import { defineStore } from 'pinia'
  */
 export const useLayoutStore = defineStore({
   id: 'Layout',
-  state: (): Layout.layout => {
+  state: (): layout.Layout => {
     return {
       isAsideFold: false
     }

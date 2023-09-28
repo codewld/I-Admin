@@ -15,7 +15,7 @@ const router = useRouter()
 
 // -- 登录相关 --
 /** 登录表单数据 */
-const loginFormData: Ref<Account.loginParam> = ref({
+const loginFormData: Ref<account.LoginParam> = ref({
   username: '',
   password: ''
 })
@@ -33,7 +33,8 @@ const login = () => {
         accountStore.setJWT(res)
         router.push({ name: 'home' })
         ElMessage.success('登录成功')
-      }).catch(err => {
+      })
+      .catch(err => {
         ElMessage.warning(err)
       })
 }
@@ -47,10 +48,10 @@ const login = () => {
       </h1>
       <el-form label-position="top" :model="loginFormData" ref="loginForm">
         <el-form-item label="账号：" prop="username">
-          <el-input type="text" v-model.trim="loginFormData.username" autocomplete="off"></el-input>
+          <el-input type="text" v-model.trim="loginFormData.username" autocomplete="off" />
         </el-form-item>
         <el-form-item label="密码：" prop="password">
-          <el-input type="password" v-model.trim="loginFormData.password" autocomplete="off"></el-input>
+          <el-input type="password" v-model.trim="loginFormData.password" autocomplete="off" />
         </el-form-item>
         <el-form-item class="mt-6">
           <el-button @click="login" type="primary" class="w-full">
@@ -58,14 +59,6 @@ const login = () => {
           </el-button>
         </el-form-item>
       </el-form>
-      <!--<div>-->
-      <!--  <label class="text-gray-500">-->
-      <!--    没有账号？-->
-      <!--  </label>-->
-      <!--  <router-link to="/register" class="text-blue-500 hover:text-blue-700">-->
-      <!--    注册新账号-->
-      <!--  </router-link>-->
-      <!--</div>-->
     </div>
   </div>
 </template>

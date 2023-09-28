@@ -50,7 +50,7 @@ const handleLogout = () => {
       <div class="space-x-4">
         <el-button link>
           <el-icon class="mr-0.5">
-            <avatar/>
+            <avatar />
           </el-icon>
           {{ accountStore.username }}
         </el-button>

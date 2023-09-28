@@ -4,26 +4,24 @@ import 'element-plus/es/components/message/style/css'
 
 
 /**
- * 表格
+ * 表格组合式函数
  * @param massGetConf 批量查询配置
  * @param queryParam 查询参数
  */
-export default function useTable<T>(massGetConf: crud.massGetConf<T>, queryParam: Ref<crud.queryParam>) {
+export default function useTable(massGetConf: crud.MassGetConf, queryParam: Ref<crud.QueryParam>) {
 
   // -- 数据相关 --
   /**
    * 数据
    */
-  const tableData: Ref<unknown[]> = ref([])
+  const tableData: Ref<common.KVObj[]> = ref([])
 
 
   // -- 分页相关 --
   /**
    * 是否有分页
    */
-  const hasPagination = computed(() => {
-    return massGetConf.page
-  })
+  const hasPagination = computed(() => massGetConf.page)
 
   /**
    * 当前页数
@@ -55,7 +53,8 @@ export default function useTable<T>(massGetConf: crud.massGetConf<T>, queryParam
   if (massGetConf.page) {
     doLoad = () => {
       isLoading.value = true
-      massGetConf.func(pageNum.value, pageSize.value, queryParam.value)
+      massGetConf
+        .func(pageNum.value, pageSize.value, queryParam.value)
         .then(res => {
           total.value = res.total
           tableData.value = res.records
@@ -71,7 +70,7 @@ export default function useTable<T>(massGetConf: crud.massGetConf<T>, queryParam
     watchEffect(
       (onCleanup) => {
         // 使watchEffect监听pageNum、pageSize
-        let temp = {
+        const temp = {
           pageNum: pageNum.value,
           pageSize: pageSize.value
         }
@@ -88,7 +87,8 @@ export default function useTable<T>(massGetConf: crud.massGetConf<T>, queryParam
   } else {
     doLoad = () => {
       isLoading.value = true
-      massGetConf.func(queryParam.value)
+      massGetConf
+        .func(queryParam.value)
         .then(res => {
           tableData.value = res
         })

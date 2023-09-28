@@ -6,7 +6,7 @@ import { defineStore } from 'pinia'
  */
 export const useCacheStore = defineStore({
   id: 'Cache',
-  state: (): { cacheManager: common.KVObj<any> } => {
+  state: (): { cacheManager: common.KVObj } => {
     return {
       cacheManager: {}
     }

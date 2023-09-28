@@ -6,7 +6,7 @@ import useCrudApi from '@/components/iCrud/composables/useCrudApi'
 
 
 /**
- * CRUD
+ * CRUD组合式函数
  * @param keyField 主键字段
  * @param fieldList 字段列表
  * @param requestConf 请求配置
@@ -14,25 +14,23 @@ import useCrudApi from '@/components/iCrud/composables/useCrudApi'
  * @param beforeAction 操作前处理
  * @param afterAction 操作后处理
  * @param afterActionSuccess 操作成功后处理
- * @param beforeDoActionCallback 操作执行前的回调
  */
-export default function useCrud<T>(
+export default function useCrud(
   keyField: string,
-  fieldList: crud.field[],
-  requestConf: crud.requestConf<T>,
+  fieldList: crud.Field[],
+  requestConf: crud.RequestConf,
   currentRowKey: Ref<string>,
-  beforeAction: (action: crud.action) => void,
-  afterAction: (action: crud.action) => void,
-  afterActionSuccess: (action: crud.action) => void,
-  beforeDoActionCallback?: crud.beforeDoActionCallback<T>) {
-
+  beforeAction: (action: crud.Action) => void,
+  afterAction: (action: crud.Action) => void,
+  afterActionSuccess: (action: crud.Action) => void
+) {
   // -- api 相关 --
   const {
     rAdd,
     rDel,
     rUpdate,
-    rGet } = useCrudApi<unknown>(requestConf)
-
+    rGet
+  } = useCrudApi(requestConf)
 
   // -- 表单相关 --
   /**
@@ -47,14 +45,14 @@ export default function useCrud<T>(
    */
   const dialogVisible = ref(false)
 
-  watch(dialogVisible, (dialogVisible, preDialogVisible) => {
+  watch(dialogVisible, (dialogVisible) => {
     if (!dialogVisible) {
       // 确保dialog已经关闭，以避免界面异常
       setTimeout(() => {
         resetAction()
 
         // 调用传入的操作后处理
-        afterAction(<crud.action>action.value)
+        afterAction(action.value as crud.Action)
       }, 300)
     }
   })
@@ -76,7 +74,7 @@ export default function useCrud<T>(
   /**
    * 当前正在进行的操作
    */
-  const action: Ref<crud.action | undefined> = ref(undefined)
+  const action: Ref<crud.Action | undefined> = ref(undefined)
 
   /**
    * 正在进行的操作描述
@@ -105,9 +103,7 @@ export default function useCrud<T>(
   /**
    * 是否有当前正在进行的操作
    */
-  const hasAction = computed(() => {
-    return action.value !== undefined
-  })
+  const hasAction = computed(() => action.value !== undefined)
 
   /**
    * 重置操作
@@ -130,36 +126,14 @@ export default function useCrud<T>(
   /**
    * 表单数据
    */
-  const formData: Ref<common.KVObj<any>> = ref({})
-
-
-  // -- 回调相关 --
-  /**
-   * 操作执行前的处理
-   * @param action 操作
-   */
-  const beforeDoAction = async (action: crud.action) => {
-    if (beforeDoActionCallback) {
-      const res = await beforeDoActionCallback(action, currentRowKey.value, iCurrentRow.value, <any>formData.value)
-      if (!res) {
-        return true
-      }
-      if (res.continue === false) {
-        return false
-      }
-      if (res.formData !== undefined) {
-        formData.value = res.formData
-      }
-    }
-    return true
-  }
+  const formData: Ref<common.KVObj> = ref({})
 
 
   // -- 增删改查相关 --
   /**
    * 准备操作
    */
-  const handleAction = async (iAction: crud.action) => {
+  const handleAction = async (iAction: crud.Action) => {
     try {
       // 如果已经有正在进行的操作，则拒绝新操作
       if (action.value !== undefined) {
@@ -174,22 +148,23 @@ export default function useCrud<T>(
 
       if (action.value === 'add') {
         formData.value = {}
-        fieldList.forEach(item => {
-          formData.value[item.code] = item.formConf?.addDefault
-        })
+        fieldList
+          .filter((item) => item.formConf?.addDefault !== undefined)
+          .forEach((item) => {
+            formData.value[item.code] = item.formConf?.addDefault
+          })
       } else if (action.value === 'del') {
-
       } else if (action.value === 'update') {
-        iCurrentRow.value = await rGet(currentRowKey.value)
-        formData.value = { ...iCurrentRow.value }
+        iCurrentRow.value = await rGet?.(currentRowKey.value)
+        formData.value = { ...iCurrentRow.value };
       } else {
-        iCurrentRow.value = await rGet(currentRowKey.value)
+        iCurrentRow.value = await rGet?.(currentRowKey.value)
         formData.value = { ...iCurrentRow.value }
       }
 
       dialogVisible.value = true
     } catch (e) {
-      ElMessage.warning(<string>e)
+      ElMessage.warning(e as string)
       resetAction()
     }
   }
@@ -207,15 +182,11 @@ export default function useCrud<T>(
         return
       }
 
-      if (!await beforeDoAction(action.value)) {
-        return
-      }
-
       let actionPromise
       if (action.value === 'add') {
-        actionPromise = rAdd(formData.value)
+        actionPromise = rAdd?.(formData.value)
       } else if (action.value === 'del') {
-        actionPromise = rDel(currentRowKey.value)
+        actionPromise = rDel?.(currentRowKey.value)
       } else {
         const diff = getDiff(formData.value, iCurrentRow.value)
         if (isEmpty(diff)) {
@@ -225,18 +196,17 @@ export default function useCrud<T>(
         if (diff[keyField] === undefined) {
           diff[keyField] = currentRowKey.value
         }
-
-        actionPromise = rUpdate(diff)
+        actionPromise = rUpdate?.(diff)
       }
 
       dialogLoading.value = true
 
       actionPromise
-        .then(() => {
+        ?.then(() => {
           ElMessage.success('操作成功')
 
           // 调用传入的操作成功后处理
-          afterActionSuccess(<crud.action>action.value)
+          afterActionSuccess(action.value as crud.Action)
 
           closeDialog()
         })

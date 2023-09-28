@@ -3,8 +3,8 @@ declare namespace common {
   /**
    * 键值对对象
    */
-  interface KVObj<v> {
-    [key: string]: v
+  interface KVObj {
+    [key: string]: unknown
   }
 
 }

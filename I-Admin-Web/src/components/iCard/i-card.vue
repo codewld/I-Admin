@@ -21,11 +21,11 @@ const props = defineProps({
         </p>
         <!--按钮区-->
         <el-button-group>
-          <slot name="button"/>
+          <slot name="button" />
         </el-button-group>
       </div>
     </template>
     <!--内容区-->
-    <slot/>
+    <slot />
   </el-card>
 </template>

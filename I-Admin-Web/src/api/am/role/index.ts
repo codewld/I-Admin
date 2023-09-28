@@ -8,5 +8,5 @@ const PREFIX = '/am-role'
  * <p>仅包含编码及名称
  */
 export function rMarkList() {
-  return request(PREFIX + '/list', 'post', undefined, { fields: ['code', 'name'] })
+  return request(PREFIX + '/list', 'post', undefined, { fields: [ 'code', 'name' ] })
 }

@@ -8,11 +8,11 @@ import IAside from './components/i-aside.vue'
 
 <template>
   <el-container direction="vertical" class="h-full">
-    <i-header/>
+    <i-header />
     <el-container class="overflow-hidden">
-      <i-aside/>
+      <i-aside />
       <el-main class="relative">
-        <router-view/>
+        <router-view />
       </el-main>
     </el-container>
   </el-container>

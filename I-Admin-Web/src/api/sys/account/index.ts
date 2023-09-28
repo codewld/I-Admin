@@ -7,6 +7,6 @@ const PREFIX = '/account'
 /**
  * 登录
  */
-export function rLogin(data: Ref<Account.loginParam>): Promise<string> {
+export function rLogin(data: Ref<account.LoginParam>): Promise<string> {
   return request(PREFIX + '/login', 'post', undefined, data)
 }

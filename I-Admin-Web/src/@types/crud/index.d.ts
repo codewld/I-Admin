@@ -3,17 +3,17 @@ declare namespace crud {
   /**
    * 操作
    */
-  type action = 'add' | 'del' | 'update' | 'see'
+  type Action = 'add' | 'del' | 'update' | 'see'
 
   /**
    * 请求配置
    */
-  type requestConf<T> = requestByPath | requestByFuncPage | requestByFuncList
+  type RequestConf = RequestByPath | RequestByFuncPage | RequestByFuncList
 
   /**
    * 请求配置-基于路径
    */
-  type requestByPath = {
+  type RequestByPath = {
     /** 请求路径 */
     path: string,
     /** 分页  [默认为true] */
@@ -23,99 +23,128 @@ declare namespace crud {
   /**
    * 请求配置-基于方法-分页
    */
-  type requestByFuncPage = {
-    addFunc: addFunc<T>,
-    delFunc: delFunc,
-    updateFunc: updateFunc<T>,
-    getFunc: getFunc<T>,
-    pageFunc: pageFunc<T>
+  type RequestByFuncPage = {
+    addFunc?: AddFunc<common.KVObj>,
+    delFunc?: DelFunc,
+    updateFunc?: UpdateFunc<common.KVObj>,
+    getFunc?: GetFunc<common.KVObj>,
+    pageFunc: PageFunc<common.KVObj>
   }
 
   /**
    * 请求配置-基于方法-列表
    */
-  type requestByFuncList = {
-    addFunc: addFunc<T>,
-    delFunc: delFunc,
-    updateFunc: updateFunc<T>,
-    getFunc: getFunc<T>,
-    listFunc: listFunc<T>
+  type RequestByFuncList = {
+    addFunc?: AddFunc<common.KVObj>,
+    delFunc?: DelFunc,
+    updateFunc?: UpdateFunc<common.KVObj>,
+    getFunc?: GetFunc<common.KVObj>,
+    listFunc: ListFunc<common.KVObj>
   }
 
   /**
    * 添加
    */
-  type addFunc<T> = (data: T) => Promise<string>
+  type AddFunc<T> = (data: T) => Promise<void>
 
   /**
    * 删除
    */
-  type delFunc = (id: string) => Promise<string>
+  type DelFunc = (id: string) => Promise<void>
 
   /**
    * 修改
    */
-  type updateFunc<T> = (data: T) => Promise<string>
+  type UpdateFunc<T> = (data: T) => Promise<void>
 
   /**
    * 查询
    */
-  type getFunc<T> = (id: string) => Promise<T>
+  type GetFunc<T> = (id: string) => Promise<T>
 
   /**
    * 分页查询
    */
-  type pageFunc<T> = (pageNum: number, pageSize: number, queryParam: crud.queryParam) => Promise<pageData<T>>
+  type PageFunc<T> = (pageNum: number, pageSize: number, queryParam: crud.QueryParam) => Promise<PageData<T>>
 
   /**
    * 列表查询
    */
-  type listFunc<T> = (queryParam: crud.queryParam) => Promise<T[]>
+  type ListFunc<T> = (queryParam: crud.QueryParam) => Promise<T[]>
 
   /**
    * 批量查询配置
    */
-  type massGetConf<T> = {page: true, func: crud.pageFunc<T>} | {page: false, func: crud.listFunc<T>}
+  type MassGetConf =
+    {
+      page: true,
+      func: crud.PageFunc<common.KVObj>
+    }
+    |
+    {
+      page: false,
+      func: crud.ListFunc<common.KVObj>
+    }
 
   /**
    * 查询参数  [适用于批量查询]
    */
-  type queryParam = {
+  type QueryParam = {
     /** 查询参数 */
     fields?: string[],
     /** 条件列表 */
-    conditions?: condition[],
+    conditions?: Condition[],
     /** 排序列表 */
-    orders?: orders[]
+    orders?: Order[]
   }
 
   /**
    * 查询参数-条件
    */
-  type condition = {
+  type Condition = {
     /** 字段名 */
     field: string,
     /** 值 */
-    value: string[],
+    value: unknown[],
     /** 操作符 */
-    operator: operator
+    operator: Operator
   }
 
   /**
    * 操作符
    */
-  type operator = 'EQ' | 'NE' | 'GT' | 'GE' | 'LT' | 'LE' | 'BETWEEN' | 'NOT_BETWEEN' | 'LIKE' | 'NOT_LIKE' | 'LIKE_LEFT'
-    | 'LIKE_RIGHT' | 'IS_NULL' | 'IS_NOT_NULL' | 'IN' | 'NOT_IN'
+  type Operator =
+    'EQ'
+    | 'NE'
+    | 'GT'
+    | 'GE'
+    | 'LT'
+    | 'LE'
+    | 'BETWEEN'
+    | 'NOT_BETWEEN'
+    | 'LIKE'
+    | 'NOT_LIKE'
+    | 'LIKE_LEFT'
+    | 'LIKE_RIGHT'
+    | 'IS_NULL'
+    | 'IS_NOT_NULL'
+    | 'IN'
+    | 'NOT_IN'
 
   /**
    * 查询参数-排序
    */
-  type orders = {}
+  interface Order {
+    /** 字段名 */
+    field: string,
+    /** 排序方式  [默认为升序] */
+    type?: 'ASC' | 'DESC'
+  }
 
   /**
    * 分页查询结果
    */
-  interface pageData<T> {
+  interface PageData<T> {
     /** 总数 */
     total: number,
     /** 数据列表 */
@@ -125,33 +154,33 @@ declare namespace crud {
   /**
    * 字段信息
    */
-  interface field {
+  interface Field {
     /** 编码 */
     code: string,
     /** 名称 */
     name: string,
     /** 搜索配置 */
-    searchConf?: searchConf,
+    searchConf?: SearchConf,
     /** 表格配置 */
-    tableConf?: tableConf,
+    tableConf?: TableConf,
     /** 表单配置 */
-    formConf?: formConf,
+    formConf?: FormConf
   }
 
   /**
    * 搜索配置
    */
-  interface searchConf {
+  interface SearchConf {
     /** 显示  [默认为true] */
     display?: boolean,
     /** 操作符  [默认为LIKE] */
-    operator?: operator
+    operator?: Operator
   }
 
   /**
    * 表格配置
    */
-  interface tableConf {
+  interface TableConf {
     /** 显示  [默认为true] */
     display?: boolean,
     /** 宽度 */
@@ -167,12 +196,12 @@ declare namespace crud {
   /**
    * 表单校验规则
    */
-  type rule = 'required'
+  type Rule = 'required'
 
   /**
    * 表单配置
    */
-  interface formConf {
+  interface FormConf {
     /** 添加时可见 */
     add?: boolean,
     /** 修改时可见 */
@@ -180,34 +209,8 @@ declare namespace crud {
     /** 查看时可见 */
     see?: boolean,
     /** 表单校验规则 */
-    rules?: rule[]
+    rules?: Rule[],
     /** 添加时默认值 */
-    addDefault?: string | number,
+    addDefault?: unknown
   }
-
-  /**
-   * 排序
-   */
-  interface order {
-    /** 字段名 */
-    field: string,
-    /** 排序方式  [默认为升序] */
-    type?: 'ASC' | 'DESC'
-  }
-
-  /**
-   * 回调结果
-   */
-  type callbackRes<T> = {
-    /** 是否继续  [默认为true] */
-    continue?: boolean,
-    /** 表单数据  [将覆盖原有表单数据] */
-    formData?: T
-  }
-
-  /**
-   * 操作执行前的回调
-   */
-  type beforeDoActionCallback<T> = (action: crud.action, currentRowKey?: string, currentRow?: T, formData?: T) => Promise<callbackRes<T> | void> | callbackRes<T> | void
-
 }

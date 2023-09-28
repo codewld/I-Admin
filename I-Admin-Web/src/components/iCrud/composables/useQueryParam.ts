@@ -1,31 +1,32 @@
 import { computed, Ref } from 'vue'
 
 /**
- * 查询参数
+ * 查询参数组合式函数
  * @param searchFormData 搜索表单数据
  * @param fieldList 字段列表
  * @param keyField 主键字段
  * @param orders 排序列表
  */
 export default function useQueryParam(
-  searchFormData: Ref<common.KVObj<any>>,
-  fieldList: crud.field[],
+  searchFormData: Ref<common.KVObj>,
+  fieldList: crud.Field[],
   keyField: string,
-  orders: crud.order[]) {
+  orders: crud.Order[]
+) {
 
   /**
    * 查询参数-条件
    */
   const conditions = computed(() => {
-    const conditions: crud.condition[] = []
+    const conditions: crud.Condition[] = []
     for (let key in searchFormData.value) {
       if (searchFormData.value[key] === '') {
         break
       }
       const operator = fieldList.find(item => item.code === key)?.searchConf?.operator ?? 'LIKE'
-      const condition: crud.condition = {
+      const condition: crud.Condition = {
         field: key,
-        value: [searchFormData.value[key]],
+        value: [ searchFormData.value[key] ],
         operator: operator
       }
       conditions.push(condition)
@@ -39,7 +40,7 @@ export default function useQueryParam(
   /**
    * 查询参数
    */
-  const queryParam: Ref<crud.queryParam> = computed(() => {
+  const queryParam: Ref<crud.QueryParam> = computed(() => {
     // 字段列表
     const fields = fieldList
       .filter(item => item.tableConf?.display !== false)
@@ -49,7 +50,7 @@ export default function useQueryParam(
     }
 
     // 排序列表
-    const iOrders: crud.order[] = orders
+    const iOrders: crud.Order[] = orders
       .map(item => {
         return {
           field: item.field,

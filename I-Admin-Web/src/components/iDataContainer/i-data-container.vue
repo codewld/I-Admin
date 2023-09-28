@@ -8,23 +8,23 @@ import { useCacheStore } from '@/store'
 
 // -- props --
 const props = withDefaults(
-  defineProps<{
-    /**
-     * 请求配置
-     */
-    requestConf: { path: string, method: Method } | (() => Promise<unknown>),
-    /**
-     * 是否立即请求  [默认为true]
-     */
-    immediate?: boolean,
-    /**
-     * 缓存配置
-     */
-    cacheConf?: { key: string }
-  }>(),
-  {
-    immediate: true
-  }
+    defineProps<{
+      /**
+       * 请求配置
+       */
+      requestConf: { path: string, method: Method } | (() => Promise<unknown>),
+      /**
+       * 是否立即请求  [默认为true]
+       */
+      immediate?: boolean,
+      /**
+       * 缓存配置
+       */
+      cacheConf?: { key: string }
+    }>(),
+    {
+      immediate: true
+    }
 )
 
 
@@ -89,7 +89,7 @@ defineExpose({
   <template v-if="loading">
     <slot name="loading">
       <el-icon class="is-loading text-2xl">
-        <Loading/>
+        <Loading />
       </el-icon>
     </slot>
   </template>

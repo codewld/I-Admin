@@ -1,9 +1,9 @@
-declare namespace Account {
+declare namespace account {
 
   /**
    * 登录参数
    */
-  interface loginParam {
+  interface LoginParam {
     /** 用户名 */
     username: string,
     /** 密码 */
@@ -13,7 +13,7 @@ declare namespace Account {
   /**
    * 账户信息
    */
-  interface account {
+  interface Account {
     /** 用户名 */
     username?: string,
     /** JWT */

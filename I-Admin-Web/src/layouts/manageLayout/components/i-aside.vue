@@ -17,18 +17,25 @@ const { triggerAside, getAsideWidth, isAsideFold } = useLayout()
 
 <template>
   <el-scrollbar :class="{fold: isAsideFold()}">
-    <el-menu router :default-active="activeRoute" :collapse="isAsideFold()" :width="getAsideWidth()" :collapse-transition="false" class="h-full select-none">
+    <el-menu
+        router
+        :default-active="activeRoute"
+        :collapse="isAsideFold()"
+        :width="getAsideWidth()"
+        :collapse-transition="false"
+        class="h-full select-none"
+    >
       <div class="h-8 flex justify-center items-center border-b">
         <el-tooltip :content="isAsideFold() ? '展开菜单' : '折叠菜单'">
           <el-icon :size="16" @click="triggerAside" class="cursor-pointer">
-            <fold v-if="!isAsideFold()"/>
-            <expand v-else/>
+            <fold v-if="!isAsideFold()" />
+            <expand v-else />
           </el-icon>
         </el-tooltip>
       </div>
       <el-menu-item index="/home">
         <el-icon>
-          <house/>
+          <house />
         </el-icon>
         <span>
           首页
@@ -37,7 +44,7 @@ const { triggerAside, getAsideWidth, isAsideFold } = useLayout()
       <el-sub-menu index="/am">
         <template #title>
           <el-icon>
-            <user/>
+            <user />
           </el-icon>
           <span>
             权限管理

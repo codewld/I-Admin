@@ -18,14 +18,14 @@ const props = defineProps({
    * 请求配置
    */
   requestConf: {
-    type: Object as PropType<crud.requestConf<unknown>>,
+    type: Object as PropType<crud.RequestConf>,
     required: true
   },
   /**
    * 字段列表
    */
   fieldList: {
-    type: Array as PropType<crud.field[]>,
+    type: Array as PropType<crud.Field[]>,
     required: true
   },
   /**
@@ -39,15 +39,15 @@ const props = defineProps({
    * 排序列表
    */
   orders: {
-    type: Array as PropType<crud.order[]>,
+    type: Array as PropType<crud.Order[]>,
     default: () => []
   },
   /**
    * 按钮列表
    */
   buttonList: {
-    type: Array as PropType<crud.action[]>,
-    default: () => ['add', 'del', 'update', 'see']
+    type: Array as PropType<crud.Action[]>,
+    default: () => [ 'add', 'del', 'update', 'see' ]
   },
   /**
    * 是否有搜索框
@@ -55,40 +55,36 @@ const props = defineProps({
   hasSearch: {
     type: Boolean,
     default: () => true
-  },
-  /**
-   * 操作执行前的回调
-   */
-  beforeDoActionCallback: {
-    type: Function as PropType<crud.beforeDoActionCallback<unknown>>,
-    required: false
   }
 })
 
 
 // -- emits --
 const emits = defineEmits<{
-  (e: 'beforeAction', action: crud.action): void
-  (e: 'afterAction', action: crud.action): void
-  (e: 'afterActionSuccess', action: crud.action): void
+  (e: 'beforeAction', action: crud.Action): void
+  (e: 'afterAction', action: crud.Action): void
+  (e: 'afterActionSuccess', action: crud.Action): void
 }>()
 
 
-// -- api 相关 --
+// -- api相关 --
 const {
-  massGetConf } = useCrudApi<unknown>(props.requestConf)
+  massGetConf
+} = useCrudApi(props.requestConf)
 
 
 // -- 搜索相关 --
 const {
   searchFormData,
   resetSearch,
-  doSearch } = useSearch(props.fieldList, () => doLoad())
+  doSearch
+} = useSearch(() => doLoad())
 
 
 // -- 查询参数相关 --
 const {
-  queryParam } = useQueryParam(searchFormData, props.fieldList, props.keyField, props.orders);
+  queryParam
+} = useQueryParam(searchFormData, props.fieldList, props.keyField, props.orders)
 
 
 // -- table相关 --
@@ -99,15 +95,15 @@ const {
   pageSize,
   total,
   isLoading,
-  doLoad } = useTable(massGetConf, queryParam)
-
+  doLoad
+} = useTable(massGetConf, queryParam)
 
 // -- 当前行相关 --
 const {
   currentRow,
   currentRowKey,
-  handleCurrentRowChange } = useCurrentRow(props.keyField)
-
+  handleCurrentRowChange
+} = useCurrentRow(props.keyField)
 
 // -- CRUD相关 --
 const {
@@ -120,7 +116,9 @@ const {
   hasAction,
   formData,
   handleAction,
-  doAction } = useCrud(props.keyField,
+  doAction
+} = useCrud(
+    props.keyField,
     props.fieldList,
     props.requestConf,
     currentRowKey,
@@ -133,13 +131,14 @@ const {
     (action) => {
       emits('afterActionSuccess', action)
       doLoad()
-    },
-    props.beforeDoActionCallback)
+    }
+)
 
 
 // -- 表单校验规则相关 --
 const {
-  getRules } = useRules()
+  getRules
+} = useRules()
 
 
 // -- 界面相关 --
@@ -148,24 +147,27 @@ const {
  */
 const searchFormItemLabelWidth = computed(() => {
   const fieldNameLengthList = props.fieldList
-    ?.filter(i => i.searchConf === undefined || i.searchConf.display === undefined || i.searchConf.display)
-    .map(i => i.name?.length ?? 0)
+      ?.filter(i => i.searchConf === undefined || i.searchConf.display === undefined || i.searchConf.display)
+      .map(i => i.name?.length ?? 0)
   const maxFieldNameLength = fieldNameLengthList.length == 0 ? 0 : Math.max(...fieldNameLengthList)
-  return `${(maxFieldNameLength + 1) * 14 + 12}px`
+  return `${ (maxFieldNameLength + 1) * 14 + 12 }px`
 })
 
 
+// -- expose --
 defineExpose({
   currentRow,
   doLoad,
-  handleAction
+  handleAction,
+  formData,
+  tableData
 })
 </script>
 
 <template>
   <i-container>
     <!--搜索区-->
-    <i-card v-if="hasSearch"  title="搜索区">
+    <i-card v-if="hasSearch" title="搜索区">
       <!--按钮区-->
       <template #button>
         <el-button :disabled="isLoading" @click="resetSearch">重置</el-button>
@@ -173,25 +175,36 @@ defineExpose({
       </template>
 
       <!--表单区-->
-      <el-form :model="searchFormData" v-loading="isLoading" inline :label-width="searchFormItemLabelWidth" style="margin-bottom: -18px">
-        <slot name="search-item-front"/>
-        <template v-for="(field, key) in fieldList" :key="key">
-          <el-form-item
-              v-if="field?.searchConf?.display ?? true"
-              :label="`${field.name}：`"
-              class="overflow-hidden w-full md:w-1/2D32 xl:w-1/3D32">
-            <slot
-                :name="`search-item-${field.code}`"
-                :row="searchFormData"
-                :placeholder="`请输入${field.name}`">
-              <el-input
-                  v-model.trim="searchFormData[field.code]"
+      <el-form
+          :model="searchFormData"
+          v-loading="isLoading"
+          inline
+          :label-width="searchFormItemLabelWidth"
+          style="margin-bottom: -18px"
+      >
+        <slot name="search" :row="searchFormData">
+          <slot name="search-item-front" />
+          <template v-for="(field, key) in fieldList" :key="key">
+            <el-form-item
+                v-if="field?.searchConf?.display ?? true"
+                :label="`${field.name}：`"
+                class="overflow-hidden w-full md:w-1/2D32 xl:w-1/3D32"
+            >
+              <slot
+                  :name="`search-item-${field.code}`"
+                  :row="searchFormData"
                   :placeholder="`请输入${field.name}`"
-                  clearable/>
-            </slot>
-          </el-form-item>
-        </template>
-        <slot name="search-item-rear"/>
+              >
+                <el-input
+                    v-model.trim="searchFormData[field.code]"
+                    :placeholder="`请输入${field.name}`"
+                    clearable
+                />
+              </slot>
+            </el-form-item>
+          </template>
+          <slot name="search-item-rear" />
+        </slot>
       </el-form>
     </i-card>
 
@@ -199,19 +212,22 @@ defineExpose({
     <i-card title="数据区">
       <!--按钮区-->
       <template #button>
-        <slot name="table-button-front"
-              :currentRow="currentRow"
-              :currentRowKey="currentRowKey"
-              :isLoading="isLoading"
-              :action="action"
-              :hasAction="hasAction"/>
+        <slot
+            name="table-button-front"
+            :currentRow="currentRow"
+            :currentRowKey="currentRowKey"
+            :isLoading="isLoading"
+            :action="action"
+            :hasAction="hasAction"
+        />
         <el-button
             v-if="buttonList?.includes('add')"
             :disabled="isLoading || hasAction"
             @click="handleAction('add')"
             :loading="action === 'add'"
             :icon="Plus"
-            type="primary">
+            type="primary"
+        >
           添加
         </el-button>
         <el-button
@@ -220,7 +236,8 @@ defineExpose({
             @click="handleAction('del')"
             :loading="action === 'del'"
             :icon="Delete"
-            type="danger">
+            type="danger"
+        >
           删除
         </el-button>
         <el-button
@@ -229,7 +246,8 @@ defineExpose({
             @click="handleAction('update')"
             :loading="action === 'update'"
             :icon="Edit"
-            type="warning">
+            type="warning"
+        >
           修改
         </el-button>
         <el-button
@@ -238,14 +256,18 @@ defineExpose({
             @click="handleAction('see')"
             :loading="action === 'see'"
             :icon="View"
-            type="success">
+            type="success"
+        >
           查看
         </el-button>
-        <slot name="table-button-rear" :currentRow="currentRow"
-              :currentRowKey="currentRowKey"
-              :isLoading="isLoading"
-              :action="action"
-              :hasAction="hasAction"/>
+        <slot
+            name="table-button-rear"
+            :currentRow="currentRow"
+            :currentRowKey="currentRowKey"
+            :isLoading="isLoading"
+            :action="action"
+            :hasAction="hasAction"
+        />
       </template>
 
       <!--表格区-->
@@ -254,25 +276,29 @@ defineExpose({
           :data="tableData"
           @current-change="handleCurrentRowChange"
           :row-key="keyField"
-          highlight-current-row>
-        <slot name="table-column-front"/>
-        <template v-for="(field, key) in fieldList" :key="key">
-          <el-table-column
-              v-if="field.tableConf?.display ?? true"
-              :prop="field.code"
-              :label="field.name"
-              :width="field.tableConf?.width ?? undefined"
-              :min-width="field.tableConf?.minWidth ?? undefined"
-              :fixed="field.tableConf?.fixed ?? undefined"
-              :align="field.tableConf?.align ?? 'center'">
-            <template #default="{ row }">
-              <slot :name="`table-column-${field.code}`" :row="<common.KVObj<any>>row">
-                {{ row[field.code] }}
-              </slot>
-            </template>
-          </el-table-column>
-        </template>
-        <slot name="table-column-rear"/>
+          highlight-current-row
+      >
+        <slot name="table">
+          <slot name="table-column-front" />
+          <template v-for="(field, key) in fieldList" :key="key">
+            <el-table-column
+                v-if="field.tableConf?.display ?? true"
+                :prop="field.code"
+                :label="field.name"
+                :width="field.tableConf?.width!"
+                :min-width="field.tableConf?.minWidth!"
+                :fixed="field.tableConf?.fixed!"
+                :align="field.tableConf?.align ?? 'center'"
+            >
+              <template #default="{ row }">
+                <slot :name="`table-column-${field.code}`" :row="row">
+                  {{ row[field.code] }}
+                </slot>
+              </template>
+            </el-table-column>
+          </template>
+          <slot name="table-column-rear" />
+        </slot>
       </el-table>
 
       <!--分页区-->
@@ -283,8 +309,8 @@ defineExpose({
           v-model:current-page="pageNum"
           v-model:page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          class="justify-center mt-5">
-      </el-pagination>
+          class="justify-center mt-5"
+      />
     </i-card>
   </i-container>
 
@@ -294,43 +320,65 @@ defineExpose({
       :title="actionDescription"
       :close-on-click-modal="false"
       destroy-on-close
-      draggable>
+      draggable
+  >
     <el-form ref="formRef" :model="formData" v-loading="dialogLoading" inline label-position="top">
-      <slot name="form" :formData="formData" :action="action">
-        <slot name="form-item-front"/>
-        <template v-if="action && ['add', 'update', 'see'].includes(action)" v-for="(field, key) in fieldList" :key="key">
-          <el-form-item
-              v-if="field?.formConf?.[action] ?? true"
-              :prop="field.code"
-              :label="`${field.name}：`"
-              :rules="getRules(field)"
-              style="width: calc(50% - 32px)">
-            <slot
-                :name="`form-item-${field.code}`"
-                :row="formData"
-                :disabled="action === 'see'"
-                :placeholder="action === 'see' ? '' : `请输入${field.name}`">
-              <el-input
-                  v-model.trim="formData[field.code]"
+      <template v-if="action && ['add', 'update', 'see'].includes(action)">
+        <slot name="form" :row="formData" :action="action">
+          <slot name="form-item-front" :row="formData" :action="action" />
+          <template v-for="(field, key) in fieldList" :key="key">
+            <slot :name="`form-item-${field.code}-front`" :row="formData" :action="action" />
+            <el-form-item
+                v-if="field?.formConf?.[action] ?? true"
+                :prop="field.code"
+                :label="`${field.name}：`"
+                :rules="getRules(field)"
+                style="width: calc(50% - 32px)"
+            >
+              <slot
+                  :name="`form-item-${field.code}`"
+                  :row="formData"
                   :disabled="action === 'see'"
-                  :placeholder="action === 'see' ? '' : `请输入${field.name}`"/>
-            </slot>
-          </el-form-item>
-        </template>
-        <template v-else>
+                  :placeholder="action === 'see' ? '' : `请输入${field.name}`"
+              >
+                <el-input
+                    v-model.trim="formData[field.code]"
+                    :disabled="action === 'see'"
+                    :placeholder="action === 'see' ? '' : `请输入${field.name}`"
+                />
+              </slot>
+            </el-form-item>
+            <slot :name="`form-item-${field.code}-rear`" :row="formData" :action="action" />
+          </template>
+          <slot name="form-item-rear" :row="formData" :action="action" />
+        </slot>
+      </template>
+      <template v-else>
+        <slot name="form-del" :row="formData">
           <div class="flex items-center text-xl">
             <el-icon class="text-red-400 mr-2">
-              <warning-filled/>
+              <warning-filled />
             </el-icon>
             是否要删除？
           </div>
-        </template>
-        <slot name="form-item-rear"/>
-      </slot>
+        </slot>
+      </template>
     </el-form>
     <template #footer>
-      <el-button :disabled="dialogLoading" @click="closeDialog">关闭</el-button>
-      <el-button v-if="action && ['add', 'del', 'update'].includes(action)" :loading="dialogLoading" type="primary" @click="doAction">确认</el-button>
+      <el-button
+          :disabled="dialogLoading"
+          @click="closeDialog"
+      >
+        关闭
+      </el-button>
+      <el-button
+          v-if="action && ['add', 'del', 'update'].includes(action)"
+          :loading="dialogLoading"
+          type="primary"
+          @click="doAction"
+      >
+        确认
+      </el-button>
     </template>
   </el-dialog>
 </template>

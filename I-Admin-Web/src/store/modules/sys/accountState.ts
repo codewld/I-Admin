@@ -6,7 +6,7 @@ import { defineStore } from 'pinia'
  */
 export const useAccountStore = defineStore({
   id: 'Account',
-  state: (): Account.account => {
+  state: (): account.Account => {
     return {
       username: undefined,
       JWT: undefined
